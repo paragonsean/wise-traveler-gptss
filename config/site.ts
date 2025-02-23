@@ -1,8 +1,8 @@
 export type SiteConfig = typeof siteConfig
 
 export const siteConfig = {
-  name: "Chef Genie",
-  url: "https://chef-genie.app",
+  name: "supabase",
+  url: "https://localhost:3000",
   ogImage: "https://chef-genie.app/og.png",
   description: "An open-source recipe generator powered by OpenAi and ChatGPT.",
   mainNav: [
@@ -14,6 +14,6 @@ export const siteConfig = {
   links: {
     twitter: "https://twitter.com/faultyled",
     github: "https://github.com/giacomogaglione",
-    docs: "https://chef-genie.app",
+    docs: "https://localhost:3000",
   },
 }

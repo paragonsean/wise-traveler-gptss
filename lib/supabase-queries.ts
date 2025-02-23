@@ -6,7 +6,7 @@ export const getRecipesByUserId = async (userId, supabaseAccessToken) => {
   const { data: recipes, error } = await supabase
     .from("recipes")
     .select()
-    .eq("user_id", userId)
+    .eq("id", userId)
     .order("created_at", { ascending: false })
 
   if (error) {

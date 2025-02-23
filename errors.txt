@@ -1,0 +1,76 @@
+[96mapp/(auth)/layout.tsx[0m:[93m15[0m:[93m19[0m - [91merror[0m[90m TS2322: [0mType 'UserResource | null | undefined' is not assignable to type 'User | null'.
+  Type 'undefined' is not assignable to type 'User | null'.
+
+[7m15[0m       <SiteHeader user={user} />
+[7m  [0m [91m                  ~~~~[0m
+
+  [96mcomponents/layout/site-header.tsx[0m:[93m23[0m:[93m3[0m
+    [7m23[0m   user: User | null
+    [7m  [0m [96m  ~~~~[0m
+    The expected type comes from property 'user' which is declared here on type 'IntrinsicAttributes & SiteHeaderProps'
+
+[96mapp/(home)/layout.tsx[0m:[93m1[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"@clerk/nextjs"' has no exported member 'currentUser'.
+
+[7m1[0m import { currentUser } from "@clerk/nextjs"
+[7m [0m [91m         ~~~~~~~~~~~[0m
+
+[96mapp/api/generate-recipe/route.ts[0m:[93m1[0m:[93m53[0m - [91merror[0m[90m TS2307: [0mCannot find module 'ai' or its corresponding type declarations.
+
+[7m1[0m import { OpenAIStream, StreamingTextResponse } from "ai"
+[7m [0m [91m                                                    ~~~~[0m
+
+[96mapp/dashboard/layout.tsx[0m:[93m1[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"@clerk/nextjs"' has no exported member 'currentUser'.
+
+[7m1[0m import { currentUser } from "@clerk/nextjs"
+[7m [0m [91m         ~~~~~~~~~~~[0m
+
+[96mapp/dashboard/my-recipes/[id]/page.tsx[0m:[93m3[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"@clerk/nextjs"' has no exported member 'auth'.
+
+[7m3[0m import { auth } from "@clerk/nextjs"
+[7m [0m [91m         ~~~~[0m
+
+[96mapp/dashboard/my-recipes/page.tsx[0m:[93m2[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"@clerk/nextjs"' has no exported member 'auth'.
+
+[7m2[0m import { auth } from "@clerk/nextjs"
+[7m [0m [91m         ~~~~[0m
+
+[96mapp/recipes/layout.tsx[0m:[93m1[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"@clerk/nextjs"' has no exported member 'currentUser'.
+
+[7m1[0m import { currentUser } from "@clerk/nextjs"
+[7m [0m [91m         ~~~~~~~~~~~[0m
+
+[96mcomponents/generate-recipe.tsx[0m:[93m4[0m:[93m31[0m - [91merror[0m[90m TS2307: [0mCannot find module 'ai/react' or its corresponding type declarations.
+
+[7m4[0m import { useCompletion } from "ai/react"
+[7m [0m [91m                              ~~~~~~~~~~[0m
+
+[96mcomponents/theme-provider.tsx[0m:[93m5[0m:[93m36[0m - [91merror[0m[90m TS2307: [0mCannot find module 'next-themes/dist/types' or its corresponding type declarations.
+
+[7m5[0m import { ThemeProviderProps } from "next-themes/dist/types"
+[7m [0m [91m                                   ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96mlib/actions.ts[0m:[93m4[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"@clerk/nextjs"' has no exported member 'auth'.
+
+[7m4[0m import { auth } from "@clerk/nextjs"
+[7m [0m [91m         ~~~~[0m
+
+[96mmiddleware.ts[0m:[93m2[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"@clerk/nextjs"' has no exported member 'authMiddleware'.
+
+[7m2[0m import { authMiddleware } from "@clerk/nextjs"
+[7m [0m [91m         ~~~~~~~~~~~~~~[0m
+
+
+Found 11 errors in 11 files.
+
+Errors  Files
+     1  app/(auth)/layout.tsx[90m:15[0m
+     1  app/(home)/layout.tsx[90m:1[0m
+     1  app/api/generate-recipe/route.ts[90m:1[0m
+     1  app/dashboard/layout.tsx[90m:1[0m
+     1  app/dashboard/my-recipes/[id]/page.tsx[90m:3[0m
+     1  app/dashboard/my-recipes/page.tsx[90m:2[0m
+     1  app/recipes/layout.tsx[90m:1[0m
+     1  components/generate-recipe.tsx[90m:4[0m
+     1  components/theme-provider.tsx[90m:5[0m
+     1  lib/actions.ts[90m:4[0m
+     1  middleware.ts[90m:2[0m

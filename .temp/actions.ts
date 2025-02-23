@@ -6,13 +6,38 @@ import { auth } from "@clerk/nextjs"
 import { supabaseClient, supabaseClientPublic } from "@/lib/supabase-client"
 
 async function getSupabaseClient() {
-  const { getToken } = auth()
-  const supabaseAccessToken = await getToken({ template: "chef-genie" })
-  return await supabaseClient(supabaseAccessToken as string)
+  console.log("🔹 Initializing Supabase client...")
+
+  try {
+    const { getToken, userId } = auth()
+    console.log("👤 Authenticated User ID:", userId)
+
+    if (!userId) {
+      throw new Error("❌ User ID not found")
+    }
+
+    const supabaseAccessToken = await getToken({ template: "chef-genie" })
+    console.log(
+      "🔑 Supabase Access Token (First 6 chars):",
+      supabaseAccessToken?.slice(0, 6)
+    )
+
+    if (!supabaseAccessToken) {
+      throw new Error("❌ Supabase Access Token is missing")
+    }
+
+    console.log("✅ Supabase client initialized successfully.")
+    return supabaseClient(supabaseAccessToken as string)
+  } catch (error) {
+    console.error("🚨 Supabase Client Initialization Error:", error)
+    throw new Error("Failed to initialize Supabase client.")
+  }
 }
 
 export async function saveGeneration(generatedRecipe) {
-  const supabase = await supabaseClientPublic()
+  console.log("🔹 Saving generation...")
+
+  const supabase = supabaseClientPublic()
 
   const data = {
     content_json: generatedRecipe,
@@ -30,7 +55,12 @@ export async function saveGeneration(generatedRecipe) {
     carbs: generatedRecipe.macros.carbs,
   }
 
-  await supabase.from("generations").insert([data])
+  console.log(
+    "📦 Data to insert into 'generations':",
+    JSON.stringify(data, null, 2)
+  )
+
+  const { error } = await supabase.from("generations").insert([data])
 
   if (error) {
     console.error("🚨 Supabase Insert Error (generations):", error)
@@ -39,14 +69,16 @@ export async function saveGeneration(generatedRecipe) {
 
   console.log("✅ Generation saved successfully.")
   revalidatePath("/")
-  console.log("Path revalidated")
 }
 
 export async function saveRecipe(generatedRecipe) {
+  console.log("🔹 Saving recipe...")
+
   const supabase = await getSupabaseClient()
   const { userId } = auth()
 
-  if (!userId) throw new Error("User ID not found")
+  console.log("👤 Authenticated User ID:", userId)
+  if (!userId) throw new Error("❌ User ID not found")
 
   const data = {
     user_id: userId,
@@ -72,24 +104,37 @@ export async function saveRecipe(generatedRecipe) {
   )
 
   try {
-    await supabase.from("recipes").insert([data])
+    const { error } = await supabase.from("recipes").insert([data])
+
+    if (error) {
+      console.error("🚨 Supabase Insert Error (recipes):", error)
+      throw new Error(error.message)
+    }
+
+    console.log("✅ Recipe saved successfully.")
   } catch (error) {
+    console.error("❌ Save Recipe Error:", error)
     throw new Error("Failed to save the recipe.")
   }
 }
 
 export async function deleteRecipe(id: string) {
+  console.log("🔹 Deleting recipe with ID:", id)
+
   const supabase = await getSupabaseClient()
   const { userId } = auth()
 
   console.log("👤 Authenticated User ID:", userId)
   if (!userId) throw new Error("❌ User ID not found")
 
-  if (!userId) throw new Error("User ID not found")
+  console.log("🔹 Attempting to delete recipe...")
+  const { error } = await supabase.from("recipes").delete().eq("id", id)
 
-  await supabase.from("recipes").delete().eq("id", id)
+  if (error) {
+    console.error("🚨 Supabase Delete Error:", error)
+    throw new Error("Failed to delete the recipe.")
+  }
 
   console.log("✅ Recipe deleted successfully.")
   revalidatePath("/dashboard/my-recipes")
-  console.log("Path revalidated")
 }
