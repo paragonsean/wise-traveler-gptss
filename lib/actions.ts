@@ -6,12 +6,15 @@ import { auth } from "@clerk/nextjs"
 import { supabaseClient, supabaseClientPublic } from "@/lib/supabase-client"
 
 async function getSupabaseClient() {
+  console.log("Getting Supabase client")
   const { getToken } = auth()
   const supabaseAccessToken = await getToken({ template: "chef-genie" })
+  console.log("Supabase access token obtained")
   return await supabaseClient(supabaseAccessToken as string)
 }
 
 export async function saveGeneration(generatedRecipe) {
+  console.log("Saving generation", generatedRecipe)
   const supabase = await supabaseClientPublic()
 
   const data = {
@@ -31,15 +34,21 @@ export async function saveGeneration(generatedRecipe) {
   }
 
   await supabase.from("generations").insert([data])
+  console.log("Generation saved")
 
   revalidatePath("/")
+  console.log("Path revalidated")
 }
 
 export async function saveRecipe(generatedRecipe) {
+  console.log("Saving recipe", generatedRecipe)
   const supabase = await getSupabaseClient()
   const userId = auth().userId
 
-  if (!userId) throw new Error("User ID not found")
+  if (!userId) {
+    console.error("User ID not found")
+    throw new Error("User ID not found")
+  }
 
   const data = {
     user_id: userId,
@@ -60,18 +69,26 @@ export async function saveRecipe(generatedRecipe) {
   }
   try {
     await supabase.from("recipes").insert([data])
+    console.log("Recipe saved")
   } catch (error) {
+    console.error("Failed to save the recipe", error)
     throw new Error("Failed to save the recipe.")
   }
 }
 
 export async function deleteRecipe(id: string) {
+  console.log("Deleting recipe with ID:", id)
   const supabase = await getSupabaseClient()
   const userId = auth().userId
 
-  if (!userId) throw new Error("User ID not found")
+  if (!userId) {
+    console.error("User ID not found")
+    throw new Error("User ID not found")
+  }
 
   await supabase.from("recipes").delete().eq("id", id)
+  console.log("Recipe deleted")
 
   revalidatePath("/dashboard/my-recipes")
+  console.log("Path revalidated")
 }

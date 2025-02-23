@@ -1,33 +1,64 @@
-import { OpenAIStream, StreamingTextResponse } from "ai"
-import OpenAI from "openai"
+import { OpenAI } from "openai"
+
 
 export const runtime = "edge"
+
+if (!process.env.OPENAI_API_KEY) {
+  console.error("Missing OpenAI API Key. Set OPENAI_API_KEY in environment variables.")
+  throw new Error("Missing OpenAI API Key.")
+}
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY!,
 })
 
 export async function POST(req: Request) {
-  // Extract the `messages` from the body of the request
-  const { prompt } = await req.json()
+  try {
+    console.log("Received a POST request.")
 
-  // Request the OpenAI API for the response based on the prompt
-  const response = await openai.chat.completions.create({
-    model: "gpt-3.5-turbo-1106",
-    temperature: 0.6,
-    frequency_penalty: 0.2,
-    presence_penalty: 0.3,
-    max_tokens: 700,
-    stream: true,
-    n: 1,
-    messages: [
-      { role: "user", content: prompt },
-      { role: "system", content: "You are an expert culinary chef" },
-    ],
-    response_format: { type: "json_object" },
-  })
+    const { prompt } = await req.json()
+    console.log("Extracted prompt:", prompt)
 
-  const stream = OpenAIStream(response)
+    if (!prompt) {
+      console.warn("No prompt provided in request body.")
+      return new Response(JSON.stringify({ error: "Prompt is required" }), { status: 400 })
+    }
 
-  return new StreamingTextResponse(stream)
+    console.log("Calling OpenAI API with prompt...")
+
+    const response = await openai.chat.completions.create({
+      model: "gpt-3.5-turbo-1106",
+      temperature: 0.6,
+      frequency_penalty: 0.2,
+      presence_penalty: 0.3,
+      max_tokens: 700,
+      stream: true,
+      n: 1,
+      messages: [
+        { role: "user", content: prompt },
+        { role: "system", content: "You are an expert culinary chef" },
+      ],
+    })
+
+    console.log("OpenAI API response received.")
+
+    // Ensure response type compatibility
+    const formattedResponse = response as AsyncIterable<any>
+
+    console.log("Creating stream from OpenAI response...")
+    const stream = new ReadableStream({
+      async start(controller) {
+        for await (const chunk of formattedResponse) {
+          controller.enqueue(chunk)
+        }
+        controller.close()
+      }
+    })
+
+    console.log("Returning streaming response to client.")
+    return new Response(stream)
+  } catch (error) {
+    console.error("Error in OpenAI request:", error)
+    return new Response(JSON.stringify({ error: "Internal Server Error" }), { status: 500 })
+  }
 }

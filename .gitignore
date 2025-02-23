@@ -40,3 +40,4 @@ yarn-error.log*
 .vscode
 .vercel
 supabase
+app/api/generate-recipe/route.ts
