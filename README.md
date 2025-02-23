@@ -1,8 +1,7 @@
-# [Chef Genie](https://chef-genie.vercel.app)
+# [WiseTraveler](https://WiseTraveler.vercel.app)
 
-An open source recipe generator powered by OpenAi and ChatGPT.
+An open source travel planner  powered by OpenAi and ChatGPT.
 
-![hero](public/og.png)
 
 > **Warning**
 This project is still in development and is not ready for production use.
@@ -27,8 +26,8 @@ This project is still in development and is not ready for production use.
 1. Clone the repository and install the dependencies
 
 ```bash
-git clone https://github.com/giacomogaglione/chef-genie.git
-cd chef-genie
+git clone https://github.com/paragonsean/wise-traveler.git
+cd wise-traveler
 pnpm install
 pnpm dev
 ```
@@ -47,4 +46,4 @@ pnpm run dev
 
 ## License
 
-Licensed under the [MIT license](https://github.com/giacomogaglione/chef-gpt/blob/main/LICENSE.md).
+Licensed under the [MIT license](https://github.com/paragonsean/travel-gpt/blob/main/LICENSE.md).

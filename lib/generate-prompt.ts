@@ -1,63 +1,103 @@
 import { FormData } from "@/types/types"
-
 export function generatePrompt(values: FormData): string {
-  const dietRestrictions = `
-    - Low-calorie: ${values.low_calori ? "Yes" : "No"}
-    - Vegan: ${values.vegan ? "Yes" : "No"}
-    - Paleo: ${values.paleo ? "Yes" : "No"}
+  const tripPreferences = `
+    - Adventure: ${values.adventure ? "Yes" : "No"}
+    - Luxury: ${values.luxury ? "Yes" : "No"}
+    - Nature: ${values.nature ? "Yes" : "No"}
   `
+
   return `
-    You are an expert culinary chef who has cooked for the best restaurants in the world.
-    Craft a delightful, creative and unique recipe with the following considerations:
+    You are an expert travel planner who designs **unique** and **personalized** travel itineraries. 
+    **Generate a well-balanced itinerary** for an **unforgettable** trip based on the following preferences:
 
-    Rules:
-      - Response must be in JSON format.
-      - Recipe must have a creative Title.
-      - Include detailed instructions with estimated cooking times for each step.
-      - Adhere to the following dietary preferences: ${dietRestrictions}
-      - Utilize only the available ingredients (${values.ingredients}).
-        Avoid incompatible ingredients based on the specified diet.
-      - Ensure the cooking time is under ${values.cooking_time} minutes.
-      - Design the recipe to serve ${values.people} people.
-      - Evaluate the difficulty of execution as ${values.difficulty}.
-      - Recipe must have a short description.
-      - Be creative with the cooking techniques and flavor combinations
-      - Feel free to incorporate herbs and spices for an extra burst of flavor
+    **Trip Details:**
+    - **Destination:** ${values.destination}
+    - **Budget:** ${values.budget} (Budget, Mid-range, or Luxury)
+    - **Duration:** ${values.duration} days
+    - **Group Size:** ${values.group_size} travelers
+    - **Travel Preferences:** 
+      ${tripPreferences}
 
+    **Rules for Itinerary Generation:**
+    - **Format**: Return a valid **JSON object**.
+    - **Title**: Provide a **catchy and exciting** title for the trip.
+    - **Description**: Summarize the **unique experience** of the trip.
+    - **Daily Itinerary**:
+      - List **daily activities** with the **time, activity name, and location**.
+      - Include at least **one recommended restaurant or local dish** per day.
+      - Suggest a mix of **sightseeing, adventure, cultural experiences, and relaxation**.
+      - Ensure activities match the traveler’s **budget and preferences**.
+    - **Cost Breakdown**:
+      - Provide an **estimated budget** for **accommodation, food, activities, and transport**.
+      - Ensure the cost **matches the selected budget type**.
+      - Show a **total estimated cost**.
 
-    The JSON object must include the following fields:
-    - "title": [string]
-    - "description": [string]
-    - "people": [number] (based on the provided input)
-    - "difficulty": [string] (based on the provided input)
-    - "cooking_time": [number] (based on the provided input)
-    - "low_calori": [string] (based on the provided input)
-    - "vegan": [string] (based on the provided input)
-    - "paleo": [string] (based on the provided input)
-    - "calories": [number],
-    - "macros": {"protein": [number], "fats": [number], "carbs": [number]},
-    - "ingredients": [{"name": [string], "amount": [string]}, ...] (based on the provided diet type and ingredients provided),
-    - "instructions": [{"step": [number], "description": [string]}, ...]
+    **The JSON object must include these fields:**
+    - **title**: [string] (Trip title)
+    - **description**: [string] (Short description of the trip)
+    - **destination**: [string] (Destination provided by the user)
+    - **budget**: [string] (Budget category: Budget, Mid-range, or Luxury)
+    - **duration**: [number] (Total trip length in days)
+    - **group_size**: [number] (Number of travelers)
+    - **preferences**: { "adventure": [boolean], "luxury": [boolean], "nature": [boolean] }
+    - **itinerary**: [
+        {
+          "day": [number],
+          "activities": [
+            {
+              "time": [string], 
+              "activity": [string], 
+              "location": [string], 
+              "estimated_cost": [number]
+            }
+          ],
+          "recommended_food": {
+            "restaurant": [string], 
+            "dish": [string], 
+            "estimated_cost": [number]
+          }
+        }
+      ]
+    - **cost_estimate**: {
+        "accommodation": [number],
+        "food": [number],
+        "activities": [number],
+        "transport": [number],
+        "total": [number]
+      }
 
-    
-    Format the response as a valid JSON object with all fields filled. Here is the structure for reference:
-    
+    **Example JSON Structure:**
     {
-      "title": /* details */,
-      "description":  /* details */,
-      "people":  /* details */,
-      "difficulty":  /* details */,
-      "cooking_time":  /* details */,
-      "low_calori":  /* details */,
-      "vegan":  /* details */, 
-      "paleo":  /* details */,
-      "calories":  /* details */,
-      "macros": { /* details */ },
-      "ingredients": { /* details */ },
-      "instructions": { /* details */ }
+      "title": "Tropical Adventure in Bali",
+      "description": "Experience Bali’s rich culture, stunning beaches, and thrilling adventures...",
+      "destination": "Bali, Indonesia",
+      "budget": "Mid-range",
+      "duration": 7,
+      "group_size": 2,
+      "preferences": { "adventure": true, "luxury": false, "nature": true },
+      "itinerary": [
+        {
+          "day": 1,
+          "activities": [
+            { "time": "10:00 AM", "activity": "Visit Uluwatu Temple", "location": "Uluwatu", "estimated_cost": 15 },
+            { "time": "1:00 PM", "activity": "Relax at Padang Padang Beach", "location": "South Bali", "estimated_cost": 5 }
+          ],
+          "recommended_food": {
+            "restaurant": "Warung Made", 
+            "dish": "Nasi Goreng", 
+            "estimated_cost": 10
+          }
+        }
+      ],
+      "cost_estimate": {
+        "accommodation": 500,
+        "food": 200,
+        "activities": 300,
+        "transport": 150,
+        "total": 1150
+      }
     }
-    
-    Respond only with the completed JSON object, without any additional explanatory or descriptive text. The JSON should be complete and ready for parsing
-  
+
+    **Respond ONLY with the completed JSON object. No extra text or explanations.**
   `
 }

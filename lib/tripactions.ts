@@ -69,11 +69,11 @@ export async function saveGeneration(generatedTrip) {
   const { error } = await supabase.from("generations").insert([data]);
 
   if (error) {
-    console.error("Supabase Insert Error (generations):", error);
+    console.error(" Supabase Insert Error (generations):", error);
     throw new Error("Failed to save generated trip.");
   }
 
-  console.log("Trip plan saved successfully.");
+  console.log(" Trip plan saved successfully.");
   revalidatePath("/");
 }
 
@@ -83,7 +83,7 @@ export async function saveTrip(generatedTrip) {
 
   const { userId } = auth();
   if (!userId) {
-    console.error("User is not authenticated.");
+    console.error(" User is not authenticated.");
     throw new Error("User ID not found");
   }
 

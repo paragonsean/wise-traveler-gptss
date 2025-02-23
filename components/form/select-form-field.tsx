@@ -25,14 +25,14 @@ export function SelectFormField({ form, name }: SelectFormFieldProps) {
         <FormItem>
           <Select onValueChange={field.onChange} defaultValue={field.value}>
             <FormControl>
-              <SelectTrigger aria-label="cooking-level">
-                <SelectValue placeholder="Select your cooking level" />
+              <SelectTrigger aria-label="trip-budget">
+                <SelectValue placeholder="Select your budget" />
               </SelectTrigger>
             </FormControl>
             <SelectContent>
-              <SelectItem value="Easy">Novice</SelectItem>
-              <SelectItem value="Medium">Medium</SelectItem>
-              <SelectItem value="Expert">Expert</SelectItem>
+              <SelectItem value="Budget">💰 Budget</SelectItem>
+              <SelectItem value="Mid-range">💵 Mid-range</SelectItem>
+              <SelectItem value="Luxury">💎 Luxury</SelectItem>
             </SelectContent>
           </Select>
         </FormItem>

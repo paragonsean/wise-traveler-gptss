@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Slider, SliderThumb } from "@/components/ui/slider"
-import { RecipeFormLabel } from "@/components/form/label-form-field"
+import { TripFormLabel } from "@/components/form/label-form-field"
 import {
   options,
   RadioGroupFormField,
@@ -25,12 +25,12 @@ import { SelectFormField } from "@/components/form/select-form-field"
 import { SwitchFormField } from "@/components/form/switch-form-field"
 import { Icons } from "@/components/icons"
 
-interface RecipeFormProps {
+interface TripFormProps {
   onSubmit: (values: FormData, e: React.FormEvent) => void
   isLoading: boolean
 }
 
-export function RecipeForm({ onSubmit, isLoading }: RecipeFormProps) {
+export function TripForm({ onSubmit, isLoading }: TripFormProps) {
   const [showAdditionalFields, setShowAdditionalFields] = useState(false)
 
   const form = useForm<FormData>({
@@ -43,19 +43,19 @@ export function RecipeForm({ onSubmit, isLoading }: RecipeFormProps) {
       <form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-6">
         <FormField
           control={form.control}
-          name="ingredients"
+          name="destination"
           render={({ field }) => (
             <FormItem>
               {showAdditionalFields && (
-                <RecipeFormLabel
+                <TripFormLabel
                   stepIndex="1"
-                  labelIndex="What ingredients are in your arsenal?"
+                  labelIndex="Where do you want to travel?"
                 />
               )}
               <FormControl>
                 <div className="relative">
                   <Input
-                    placeholder="Broccoli, Potatoes, Rice"
+                    placeholder="Paris, Tokyo, New York..."
                     {...field}
                     onClick={() => setShowAdditionalFields(true)}
                     className="rounded-xl bg-primary text-secondary shadow-lg placeholder:text-secondary/70"
@@ -71,63 +71,63 @@ export function RecipeForm({ onSubmit, isLoading }: RecipeFormProps) {
           <>
             <FormField
               control={form.control}
-              name="cooking_time"
+              name="duration"
               render={({ field }) => (
                 <FormItem className="space-y-3">
-                  <RecipeFormLabel
+                  <TripFormLabel
                     stepIndex="2"
-                    labelIndex="How much time can you spare?"
+                    labelIndex="How many days is your trip?"
                   />
                   <FormControl>
                     <Slider
-                      id="cooking-time"
-                      aria-label="Choose cooking time"
-                      defaultValue={[5]}
-                      max={120}
-                      step={10}
-                      min={5}
-                      onValueChange={field.onChange}
-                      {...field}
+                      id="trip-duration"
+                      aria-label="Choose trip duration"
+                      defaultValue={[5]} // Keep an array for defaultValue
+                      max={30}
+                      step={1}
+                      min={1}
+                      onValueChange={(value) => field.onChange(value[0])} //  Extract first element from array
                     >
-                      <SliderThumb aria-label="Cooking time"></SliderThumb>
+                      <SliderThumb aria-label="Trip duration"></SliderThumb>
                     </Slider>
                   </FormControl>
                   <FormDescription className="flex flex-row-reverse">
-                    🕛 {field.value} minutes
+                    {field.value} days
                   </FormDescription>
                 </FormItem>
               )}
             />
+
             <FormItem>
-              <RecipeFormLabel
+              <TripFormLabel
                 stepIndex="3"
-                labelIndex="How many hungry souls?"
+                labelIndex="Who are you traveling with?"
               />
               <RadioGroupFormField
                 form={form}
-                name="people"
+                name="group_size"
                 options={options}
               />
             </FormItem>
             <FormItem>
-              <RecipeFormLabel
+              <TripFormLabel
                 stepIndex="4"
-                labelIndex="Are you the master of the kitchen domain?"
+                labelIndex="What’s your budget range?"
               />
-              <SelectFormField form={form} name="difficulty" />
+              <SelectFormField form={form} name="budget" />
             </FormItem>
             <FormItem>
-              <RecipeFormLabel
+              <TripFormLabel
                 stepIndex="5"
-                labelIndex="Any specific preferences for your feast?"
+                labelIndex="Do you have any trip preferences?"
               />
               <SwitchFormField
                 form={form}
-                name="low_calori"
-                label="⚖️ Low Cal"
+                name="adventure"
+                label="🏕️ Adventure"
               />
-              <SwitchFormField form={form} name="vegan" label="🌿 Vegan" />
-              <SwitchFormField form={form} name="paleo" label="🍖 Paleo" />
+              <SwitchFormField form={form} name="luxury" label="🏨 Luxury" />
+              <SwitchFormField form={form} name="nature" label="🌿 Nature" />
             </FormItem>
             {isLoading ? (
               <Button disabled size="lg" className="w-full font-semibold">
@@ -135,14 +135,14 @@ export function RecipeForm({ onSubmit, isLoading }: RecipeFormProps) {
                   className="mr-2 size-4 animate-spin"
                   aria-hidden="true"
                 />
-                Generating recipe
+                Generating trip plan
               </Button>
             ) : (
               <Button type="submit" size="lg" className="w-full font-semibold">
-                Generate recipe
+                Generate trip plan
                 <Icons.generate className="ml-2 size-4" aria-hidden="true" />
               </Button>
-            )}{" "}
+            )}
           </>
         )}
       </form>

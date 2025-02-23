@@ -10,7 +10,7 @@ export default authMiddleware({
     "/dashboard",
     "/sign-out",
     "/api(.*)",
-    "/recipes(.*)",
+    "/trips(.*)",
   ],
   async afterAuth(auth, req) {
     if (auth.isPublicRoute) {

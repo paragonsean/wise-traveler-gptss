@@ -1,18 +1,17 @@
 import { Suspense } from "react"
 
-import { GenerateRecipe } from "@/components/generate-recipe"
+import { GenerateTrip } from "@/components/generate-trip"
 import {
   PageHeader,
   PageHeaderDescription,
   PageHeaderHeading,
 } from "@/components/layout/page-header"
-import { RecentRecipes } from "@/components/recent-recipes"
+import { RecentTrips } from "@/components/recent-trips"
 
 export default async function IndexPage() {
   return (
     <div className="container grid">
       <PageHeader>
-       
         <PageHeaderHeading>
           Say goodbye to travel planning with{" "}
           <span className="bg-gradient-to-r from-violet-500 to-teal-300 bg-clip-text text-transparent">
@@ -20,12 +19,12 @@ export default async function IndexPage() {
           </span>
         </PageHeaderHeading>
         <PageHeaderDescription>
-          Free. Open Source. Trip Planner generator powered by OpenAI and ChatGPT.
+          Free. Open Source. AI-powered trip planner, helping you create personalized itineraries effortlessly.
         </PageHeaderDescription>
       </PageHeader>
-      <GenerateRecipe />
+      <GenerateTrip />
       <Suspense>
-        <RecentRecipes />
+        <RecentTrips />
       </Suspense>
     </div>
   )

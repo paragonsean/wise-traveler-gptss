@@ -8,19 +8,18 @@ import {
   PageHeaderHeading,
 } from "@/components/layout/page-header"
 
-export default function RecipeNotFound() {
+export default function TripNotFound() {
   return (
     <div className="container grid ">
       <PageHeader>
-        <PageHeaderHeading>Oops!</PageHeaderHeading>
+        <PageHeaderHeading>Oops! Lost in Transit</PageHeaderHeading>
         <PageHeaderDescription>
-          It seems our chef got a bit too creative and lost the recipe!
-          We&apos;re on a quest to find it. Meanwhile, let&apos;s share a
-          virtual cookie and try another delicious adventure!✨
+          It seems like this trip itinerary has gone off the map! 🌍
+          Let’s navigate back and explore another destination.
         </PageHeaderDescription>
         <PageActions>
           <Link href="/">
-            <Button>Go back Home</Button>
+            <Button>Go Back Home</Button>
           </Link>
         </PageActions>
       </PageHeader>

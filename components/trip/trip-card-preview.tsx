@@ -12,23 +12,20 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 
-type Recipe = Tables<"recipes">
+type Trip = Tables<"trips">
 
-interface RecipeCardProps {
-  recipe: Recipe
+interface TripCardProps {
+  trip: Trip
   isPrivate?: boolean
 }
 
-export function RecipeCardPreview({
-  recipe,
+export function TripCardPreview({
+  trip,
   isPrivate = false,
-}: RecipeCardProps) {
-  const isVegan = recipe?.vegan === "Yes"
-  const isPaleo = recipe?.paleo === "Yes"
-  const cookingTime = recipe?.cooking_time?.replaceAll(/[^0-9]/g, "")
-  const href = isPrivate
-    ? `/dashboard/my-recipes/${recipe.id}`
-    : `/recipes/${recipe.id}`
+}: TripCardProps) {
+  const isInternational = trip?.adventure === true
+  const duration = trip?.duration?.toString().replaceAll(/[^0-9]/g, "")
+  const href = isPrivate ? `/dashboard/my-trips/${trip.id}` : `/trips/${trip.id}`
 
   return (
     <Link href={href}>
@@ -36,19 +33,18 @@ export function RecipeCardPreview({
         <CardHeader className="grid items-start gap-4 space-y-0">
           <div className="space-y-1">
             <CardTitle className="line-clamp-1 text-lg">
-              {recipe?.title}
+              {trip?.destination}
             </CardTitle>
             <CardDescription className="line-clamp-2">
-              {recipe?.description}
+              {trip?.description}
             </CardDescription>
           </div>
         </CardHeader>
         <CardContent>
           <div className="flex space-x-2">
-            <Badge>{recipe?.difficulty}</Badge>
-            <Badge variant="secondary">🕓 {cookingTime} min</Badge>
-            {isVegan && <Badge variant="vegan">Vegan</Badge>}
-            {isPaleo && <Badge variant="paleo">Paleo</Badge>}
+            <Badge>{trip?.budget}</Badge>
+            <Badge variant="secondary">{duration} days</Badge>
+            {isInternational && <Badge variant="default">International</Badge>}
           </div>
         </CardContent>
       </Card>

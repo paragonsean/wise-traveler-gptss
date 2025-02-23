@@ -3,20 +3,19 @@ import {
   PageHeaderDescription,
   PageHeaderHeading,
 } from "@/components/layout/page-header"
-import { RecipeCardSkeleton } from "@/components/recipe/recipe-card-skeleton"
+import { TripCardSkeleton } from "@/components/trip/trip-card-skeleton"
 
-export default function RecipeLoading() {
+export default function TripLoading() {
   return (
     <div className="container grid animate-pulse">
       <PageHeader>
-        <PageHeaderHeading>Your Recipe in the Making!</PageHeaderHeading>
+        <PageHeaderHeading>Your Trip Itinerary is in Progress!</PageHeaderHeading>
         <PageHeaderDescription>
-          Simmering up a digital feast! Your recipe is currently undergoing a
-          gourmet transformation!✨
+          Planning the perfect journey! Your travel itinerary is being crafted with amazing destinations and adventures! ✈️🌍
         </PageHeaderDescription>
       </PageHeader>
       <div className="mx-auto w-full max-w-3xl">
-        <RecipeCardSkeleton />
+        <TripCardSkeleton />
       </div>
     </div>
   )

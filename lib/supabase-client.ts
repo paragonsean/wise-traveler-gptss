@@ -23,6 +23,6 @@ export async function supabaseClient() {
 
 // Public client (no authentication required)
 export function supabaseClientPublic() {
-  console.log("🔹 Creating public Supabase client...");
+  console.log("Creating public Supabase client...");
   return createClient(supabaseUrl, supabaseAnonKey);
 }

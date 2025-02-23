@@ -3,7 +3,7 @@ import "@/styles/globals.css"
 import { Metadata, Viewport } from "next"
 import { ClerkProvider } from "@clerk/nextjs"
 import { Analytics } from "@vercel/analytics/react"
-import { SpeedInsights } from "@vercel/speed-insights/next"
+
 import { Toaster } from "sonner"
 
 import { siteConfig } from "@/config/site"
@@ -12,30 +12,28 @@ import { cn } from "@/lib/utils"
 import { ThemeProvider } from "@/components/theme-provider"
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://chef-genie.app"),
+  metadataBase: new URL("https://wise-traveler.app"), //  Corrected Site URL
   title: {
     default: siteConfig.name,
     template: `%s - ${siteConfig.name}`,
   },
   description: siteConfig.description,
   keywords: [
-    "Chef GPT",
-    "Chef Genie",
-    "Recipe Generator",
-    "Recipe ChatGPT",
-    "Recipe AI",
-    "Chef AI",
-    "Meal generator",
-    "Cook GPT",
-    "Cooking generator",
+    "Wise Traveler",
+    "Trip Planner AI",
+    "AI Travel Assistant",
+    "Vacation Planner",
+    "Smart Travel Guide",
+    "Trip Itinerary Generator",
+    "AI-Powered Travel",
   ],
   authors: [
     {
-      name: "faultyled",
-      url: "https://github.com/giacomogaglione",
+      name: "Your Name", //  Update with correct author info
+      url: "https://github.com/yourprofile",
     },
   ],
-  creator: "faultyled",
+  creator: "Wise Traveler Team",
   openGraph: {
     type: "website",
     locale: "en_US",
@@ -57,7 +55,7 @@ export const metadata: Metadata = {
     title: siteConfig.name,
     description: siteConfig.description,
     images: [siteConfig.ogImage],
-    creator: "@faultyled",
+    creator: "@wise_traveler", //  Update Twitter Handle
   },
   icons: {
     icon: "/favicon.ico",
@@ -89,7 +87,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
         >
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
             {children}
-            <SpeedInsights />
+         
             <Analytics />
           </ThemeProvider>
           <Toaster richColors />
