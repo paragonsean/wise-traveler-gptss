@@ -12,7 +12,7 @@ import { RecipeCard } from "@/components/recipe/recipe-card"
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://chef-genie.app"),
-  title: "My Recipes",
+  title: "My recipes",
   description: "Manage your recipes.",
 }
 

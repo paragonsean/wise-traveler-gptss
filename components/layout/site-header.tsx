@@ -71,12 +71,12 @@ export function SiteHeader({ user }: SiteHeaderProps) {
                       </Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild>
-                      <Link href="/dashboard/my-recipes">
+                      <Link href="/dashboard/my-trips">
                         <Icons.terminal
                           className="mr-2 size-4"
                           aria-hidden="true"
                         />
-                        My Recipes
+                        My trips
                         <DropdownMenuShortcut>⌘D</DropdownMenuShortcut>
                       </Link>
                     </DropdownMenuItem>

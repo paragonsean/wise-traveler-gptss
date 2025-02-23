@@ -3,11 +3,11 @@ import { currentUser } from "@clerk/nextjs"
 import { SiteFooter } from "@/components/layout/site-footer"
 import { SiteHeader } from "@/components/layout/site-header"
 
-interface RecipesLayoutProps {
+interface recipesLayoutProps {
   children: React.ReactNode
 }
 
-export default async function RecipesLayout({ children }: RecipesLayoutProps) {
+export default async function recipesLayout({ children }: recipesLayoutProps) {
   const user = await currentUser()
 
   return (

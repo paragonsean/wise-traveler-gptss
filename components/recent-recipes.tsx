@@ -1,8 +1,8 @@
-import { getLatestRecipes } from "@/lib/supabase-queries"
+import { getLatestrecipes } from "@/lib/supabase-queries"
 import { RecipeCardPreview } from "@/components/recipe/recipe-card-preview"
 
 export async function RecentRecipes() {
-  const [recipes] = await Promise.all([getLatestRecipes()])
+  const [recipes] = await Promise.all([getLatestrecipes()])
   return (
     <div className="duration-1200 ease-in-out animate-in fade-in slide-in-from-bottom-4">
       <h2 className="text-2xl font-semibold tracking-tight">Recent Recipes</h2>

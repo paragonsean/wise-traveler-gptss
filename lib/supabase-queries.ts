@@ -3,7 +3,7 @@ import { supabaseClient, supabaseClientPublic } from "@/lib/supabase-client";
 import { auth } from "@clerk/nextjs";
 
 // Fetch user-specific recipes (Private)
-export async function getRecipesByUserId() {
+export async function getrecipesByUserId() {
   console.log("Fetching recipes for authenticated user...");
 
   const { userId } = auth();
@@ -22,20 +22,20 @@ export async function getRecipesByUserId() {
       .order("created_at", { ascending: false });
 
     if (error) {
-      console.error("Supabase Fetch Error in `getRecipesByUserId()`:", error);
+      console.error("Supabase Fetch Error in `getrecipesByUserId()`:", error);
       return [];
     }
 
     console.log("User recipes fetched successfully.");
     return recipes || [];
   } catch (error) {
-    console.error("Unexpected error in `getRecipesByUserId()`:", error);
+    console.error("Unexpected error in `getrecipesByUserId()`:", error);
     return [];
   }
 }
 
 //  Fetch latest generated recipes (Public)
-export async function getLatestRecipes() {
+export async function getLatestrecipes() {
   console.log("🔹 Fetching latest generated recipes...");
 
   const supabase = supabaseClientPublic();
@@ -47,14 +47,14 @@ export async function getLatestRecipes() {
       .limit(3);
 
     if (error) {
-      console.error(" Error in `getLatestRecipes()`:", error);
+      console.error(" Error in `getLatestrecipes()`:", error);
       return [];
     }
 
     console.log("Latest recipes fetched successfully.");
     return recipes;
   } catch (error) {
-    console.error("Unexpected error in `getLatestRecipes()`:", error);
+    console.error("Unexpected error in `getLatestrecipes()`:", error);
     return [];
   }
 }
@@ -85,7 +85,7 @@ export async function getRecipe(id: string) {
 }
 
 // Get total recipe count
-export async function getRecipesCount() {
+export async function getrecipesCount() {
   console.log("Counting total recipes...");
 
   const supabase = supabaseClientPublic();
@@ -95,14 +95,14 @@ export async function getRecipesCount() {
       .select("*", { count: "exact", head: true });
 
     if (error) {
-      console.error("Error in `getRecipesCount()`:", error);
+      console.error("Error in `getrecipesCount()`:", error);
       return 0;
     }
 
     console.log("otal recipes counted successfully:", count);
     return count;
   } catch (error) {
-    console.error("Unexpected error in `getRecipesCount()`:", error);
+    console.error("Unexpected error in `getrecipesCount()`:", error);
     return 0;
   }
 }
@@ -156,7 +156,7 @@ export async function getRecipePrivate(id: string) {
     return null;
   }
 }
-export async function getRecipesPrivate(): Promise<RecipeTable[] | null> {
+export async function getrecipesPrivate(): Promise<RecipeTable[] | null> {
   const { getToken, userId } = auth()
   const supabaseAccessToken = await getToken({ template: "supabase" })
   const supabase = await supabaseClient()

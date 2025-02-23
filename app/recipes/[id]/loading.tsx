@@ -9,10 +9,9 @@ export default function RecipeLoading() {
   return (
     <div className="container grid animate-pulse">
       <PageHeader>
-        <PageHeaderHeading>Your Recipe in the Making!</PageHeaderHeading>
+        <PageHeaderHeading>Your Vacation in the Making!</PageHeaderHeading>
         <PageHeaderDescription>
-          Simmering up a digital feast! Your recipe is currently undergoing a
-          gourmet transformation!✨
+         Building up a travel plan
         </PageHeaderDescription>
       </PageHeader>
       <div className="mx-auto w-full max-w-3xl">

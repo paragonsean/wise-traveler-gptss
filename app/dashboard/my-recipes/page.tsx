@@ -1,7 +1,7 @@
 import { type Metadata } from "next"
 
 import type { Tables } from "@/types/database.types"
-import { getRecipesByUserId, getRecipesPrivate } from "@/lib/supabase-queries"
+import { getrecipesByUserId, getrecipesPrivate } from "@/lib/supabase-queries"
 import { columns } from "@/components/dashboard/columns"
 import { DataTable } from "@/components/dashboard/data-table"
 import {
@@ -22,15 +22,15 @@ export const metadata: Metadata = {
 
 export default async function RecipePage() {
 
-  const recipes = await getRecipesByUserId()
-  const data = await getRecipesPrivate()
+  const recipes = await getrecipesByUserId()
+  const data = await getrecipesPrivate()
 
   return (
     <div className="container grid">
       <PageHeader>
-        <PageHeaderHeading>Your Culinary Creations</PageHeaderHeading>
+        <PageHeaderHeading>Your Travel Plans </PageHeaderHeading>
         <PageHeaderDescription>
-          Explore your saved recipes in one place. Your culinary journey starts
+          Explore your saved Trips  in one place. Your adventure and  journey across the world starts
           here!
         </PageHeaderDescription>
       </PageHeader>

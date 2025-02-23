@@ -5,7 +5,7 @@ import { auth } from "@clerk/nextjs";
 import { supabaseClient, supabaseClientPublic } from "@/lib/supabase-client";
 
 //  Fetch private recipes for the authenticated user
-export async function getUserRecipes() {
+export async function getUserrecipes() {
   console.log("Fetching user-specific recipes...");
 
   const { userId } = auth();
@@ -30,7 +30,7 @@ export async function getUserRecipes() {
     }
 
     // Fetch generated recipes
-    const { data: generatedRecipes, error: generatedError } = await supabase
+    const { data: generatedrecipes, error: generatedError } = await supabase
       .from("generations")
       .select()
       .order("created_at", { ascending: false })
@@ -42,9 +42,9 @@ export async function getUserRecipes() {
     }
 
     console.log("User-specific recipes fetched successfully.");
-    return { recipes: recipes || [], data: generatedRecipes || [] };
+    return { recipes: recipes || [], data: generatedrecipes || [] };
   } catch (error) {
-    console.error(" Unexpected error in `getUserRecipes()`:", error);
+    console.error(" Unexpected error in `getUserrecipes()`:", error);
     return { recipes: [], data: [] };
   }
 }
