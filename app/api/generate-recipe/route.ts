@@ -1,6 +1,5 @@
 import { OpenAI } from "openai"
 
-
 export const runtime = "edge"
 
 if (!process.env.OPENAI_API_KEY) {
@@ -42,23 +41,29 @@ export async function POST(req: Request) {
 
     console.log("OpenAI API response received.")
 
-    // Ensure response type compatibility
-    const formattedResponse = response as AsyncIterable<any>
-
-    console.log("Creating stream from OpenAI response...")
+    // Convert OpenAI stream response to a valid ReadableStream
     const stream = new ReadableStream({
       async start(controller) {
-        for await (const chunk of formattedResponse) {
-          controller.enqueue(chunk)
+        for await (const chunk of response) {
+          console.log("🔹 OpenAI Stream Chunk:", chunk)
+
+          if (chunk.choices && chunk.choices.length > 0) {
+            const content = chunk.choices[0]?.delta?.content
+            if (content) {
+              controller.enqueue(content) // Ensures only valid strings are written
+            }
+          }
         }
         controller.close()
-      }
+      },
     })
 
     console.log("Returning streaming response to client.")
-    return new Response(stream)
+    return new Response(stream, {
+      headers: { "Content-Type": "text/plain; charset=utf-8" },
+    })
   } catch (error) {
-    console.error("Error in OpenAI request:", error)
+    console.error("🚨 Error in OpenAI request:", error)
     return new Response(JSON.stringify({ error: "Internal Server Error" }), { status: 500 })
   }
 }

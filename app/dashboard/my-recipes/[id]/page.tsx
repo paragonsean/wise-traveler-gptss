@@ -27,7 +27,7 @@ export default async function RecipePage({ params }: RecipePageProps) {
   const id = params.id
   const supabaseAccessToken = await getToken({ template: "chef-genie" })
   const [recipe] = await Promise.all([
-    getRecipePrivate(id, supabaseAccessToken),
+    getRecipePrivate(id),
   ])
 
   if (!recipe) {

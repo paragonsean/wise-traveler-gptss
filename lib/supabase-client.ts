@@ -1,19 +1,28 @@
-import { createClient } from "@supabase/supabase-js"
+import { createClient } from "@supabase/supabase-js";
+import { auth } from "@clerk/nextjs";
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_KEY
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_KEY!;
 
-console.log("🔹 Supabase URL:", supabaseUrl)
-console.log("🔹 Supabase Key (First 6 chars):", supabaseKey?.slice(0, 6))
+// Authenticated Supabase client (fetches token inside)
+export async function supabaseClient() {
+  console.log("Initializing authenticated Supabase client...");
 
-export const supabaseClient = (supabaseAccessToken: string) => {
-  console.log("🔹 Creating authenticated Supabase client...")
-  return createClient(supabaseUrl as string, supabaseKey as string, {
+  const { getToken } = auth();
+  const supabaseAccessToken = await getToken({ template: "supabase" });
+
+  if (!supabaseAccessToken) {
+    throw new Error("Supabase Access Token is missing");
+  }
+
+  console.log("Authenticated Supabase client initialized.");
+  return createClient(supabaseUrl, supabaseAnonKey, {
     global: { headers: { Authorization: `Bearer ${supabaseAccessToken}` } },
-  })
+  });
 }
 
-export const supabaseClientPublic = () => {
-  console.log("🔹 Creating public Supabase client...")
-  return createClient(supabaseUrl as string, supabaseKey as string)
+// Public client (no authentication required)
+export function supabaseClientPublic() {
+  console.log("🔹 Creating public Supabase client...");
+  return createClient(supabaseUrl, supabaseAnonKey);
 }

@@ -1,19 +1,59 @@
-"use server"
+"use server";
 
-import { revalidatePath } from "next/cache"
-import { auth } from "@clerk/nextjs"
+import { revalidatePath } from "next/cache";
+import { auth } from "@clerk/nextjs";
+import { supabaseClient, supabaseClientPublic } from "@/lib/supabase-client";
 
-import { supabaseClient, supabaseClientPublic } from "@/lib/supabase-client"
+//  Fetch private recipes for the authenticated user
+export async function getUserRecipes() {
+  console.log("Fetching user-specific recipes...");
 
-async function getSupabaseClient() {
-  const { getToken } = auth()
-  const supabaseAccessToken = await getToken({ template: "chef-genie" })
-  return await supabaseClient(supabaseAccessToken as string)
+  const { userId } = auth();
+  if (!userId) {
+    console.error(" User is not authenticated.");
+    return { recipes: [], data: [] };
+  }
+
+  try {
+    const supabase = await supabaseClient();
+    
+    // Fetch saved recipes
+    const { data: recipes, error: recipesError } = await supabase
+      .from("recipes")
+      .select()
+      .eq("user_id", userId)
+      .order("created_at", { ascending: false });
+
+    if (recipesError) {
+      console.error("🚨 Supabase Fetch Error (recipes):", recipesError);
+      return { recipes: [], data: [] };
+    }
+
+    // Fetch generated recipes
+    const { data: generatedRecipes, error: generatedError } = await supabase
+      .from("generations")
+      .select()
+      .order("created_at", { ascending: false })
+      .limit(3);
+
+    if (generatedError) {
+      console.error(" Supabase Fetch Error (generated recipes):", generatedError);
+      return { recipes: [], data: [] };
+    }
+
+    console.log("User-specific recipes fetched successfully.");
+    return { recipes: recipes || [], data: generatedRecipes || [] };
+  } catch (error) {
+    console.error(" Unexpected error in `getUserRecipes()`:", error);
+    return { recipes: [], data: [] };
+  }
 }
 
+// Save generated recipe (Public)
 export async function saveGeneration(generatedRecipe) {
-  const supabase = await supabaseClientPublic()
+  console.log("Saving generated recipe...");
 
+  const supabase = await supabaseClientPublic();
   const data = {
     content_json: generatedRecipe,
     title: generatedRecipe.title,
@@ -28,68 +68,76 @@ export async function saveGeneration(generatedRecipe) {
     proteins: generatedRecipe.macros.protein,
     fats: generatedRecipe.macros.fats,
     carbs: generatedRecipe.macros.carbs,
-  }
+  };
 
-  await supabase.from("generations").insert([data])
+  const { error } = await supabase.from("generations").insert([data]);
 
   if (error) {
-    console.error("🚨 Supabase Insert Error (generations):", error)
-    throw new Error("Failed to save generation")
+    console.error(" Supabase Insert Error (generations):", error);
+    throw new Error("Failed to save generation.");
   }
 
-  console.log("✅ Generation saved successfully.")
-  revalidatePath("/")
-  console.log("Path revalidated")
+  console.log(" Generation saved successfully.");
+  revalidatePath("/");
 }
 
+//  Save user recipe (Private)
 export async function saveRecipe(generatedRecipe) {
-  const supabase = await getSupabaseClient()
-  const { userId } = auth()
+  console.log("Saving user recipe...");
 
-  if (!userId) throw new Error("User ID not found")
+  const { userId } = auth();
+  if (!userId) {
+    console.error("User is not authenticated.");
+    throw new Error("User ID not found");
+  }
 
+  const supabase = await supabaseClient();
   const data = {
     user_id: userId,
     title: generatedRecipe.title,
     description: generatedRecipe.description,
     content_json: generatedRecipe,
-    ingredients: JSON.stringify(generatedRecipe.ingredients), // ✅ Ensured JSON is stored correctly
+    ingredients: generatedRecipe.ingredients,
     difficulty: generatedRecipe.difficulty,
     cooking_time: generatedRecipe.cooking_time,
     people: generatedRecipe.people,
-    low_calories: generatedRecipe.low_calories, // ✅ Fixed typo
+    low_calories: generatedRecipe.low_calories, // Fixed typo
     vegan: generatedRecipe.vegan,
     paleo: generatedRecipe.paleo,
     calories: generatedRecipe.calories,
     proteins: generatedRecipe.macros.protein,
     fats: generatedRecipe.macros.fats,
     carbs: generatedRecipe.macros.carbs,
+  };
+
+  const { error } = await supabase.from("recipes").insert([data]);
+
+  if (error) {
+    console.error("Supabase Insert Error (recipes):", error);
+    throw new Error("Failed to save the recipe.");
   }
 
-  console.log(
-    "📦 Data to insert into 'recipes':",
-    JSON.stringify(data, null, 2)
-  )
-
-  try {
-    await supabase.from("recipes").insert([data])
-  } catch (error) {
-    throw new Error("Failed to save the recipe.")
-  }
+  console.log("Recipe saved successfully.");
 }
 
+// Delete user recipe (Private)
 export async function deleteRecipe(id: string) {
-  const supabase = await getSupabaseClient()
-  const { userId } = auth()
+  console.log("🔹 Deleting recipe with ID:", id);
 
-  console.log("👤 Authenticated User ID:", userId)
-  if (!userId) throw new Error("❌ User ID not found")
+  const { userId } = auth();
+  if (!userId) {
+    console.error("User is not authenticated.");
+    throw new Error("User ID not found");
+  }
 
-  if (!userId) throw new Error("User ID not found")
+  const supabase = await supabaseClient();
+  const { error } = await supabase.from("recipes").delete().eq("id", id);
 
-  await supabase.from("recipes").delete().eq("id", id)
+  if (error) {
+    console.error(" Supabase Delete Error:", error);
+    throw new Error("Failed to delete the recipe.");
+  }
 
-  console.log("✅ Recipe deleted successfully.")
-  revalidatePath("/dashboard/my-recipes")
-  console.log("Path revalidated")
+  console.log(" Recipe deleted successfully.");
+  revalidatePath("/dashboard/my-recipes");
 }

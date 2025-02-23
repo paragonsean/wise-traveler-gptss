@@ -1,10 +1,8 @@
 import { type Metadata } from "next"
-import { auth } from "@clerk/nextjs"
 
 import type { Tables } from "@/types/database.types"
-import { supabaseClient } from "@/lib/supabase-client"
-import { getRecipesByUserId } from "@/lib/supabase-queries"
-import { columns, RecipeTable } from "@/components/dashboard/columns"
+import { getRecipesByUserId, getRecipesPrivate } from "@/lib/supabase-queries"
+import { columns } from "@/components/dashboard/columns"
 import { DataTable } from "@/components/dashboard/data-table"
 import {
   PageHeader,
@@ -22,28 +20,9 @@ export const metadata: Metadata = {
     "Explore your saved recipes in one place. Your culinary journey starts here!",
 }
 
-async function getRecipesPrivate(): Promise<RecipeTable[] | null> {
-  const { getToken, userId } = auth()
-  const supabaseAccessToken = await getToken({ template: "chef-genie" })
-  const supabase = await supabaseClient(supabaseAccessToken as string)
-  try {
-    const { data: recipes } = await supabase
-      .from("recipes")
-      .select()
-      .eq("user_id", userId)
-      .order("created_at", { ascending: false })
-
-    return recipes || null
-  } catch (error) {
-    console.error("Error:", error)
-    return null
-  }
-}
-
 export default async function RecipePage() {
-  const { getToken, userId } = auth()
-  const supabaseAccessToken = await getToken({ template: "chef-genie" })
-  const recipes = await getRecipesByUserId(userId, supabaseAccessToken)
+
+  const recipes = await getRecipesByUserId()
   const data = await getRecipesPrivate()
 
   return (
