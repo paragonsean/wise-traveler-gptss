@@ -1,6 +1,6 @@
 # [WiseTraveler](https://WiseTraveler.vercel.app)
 
-An open source travel planner  powered by OpenAi and ChatGPT.
+An open source travel planner  powered by OpenAi and ChatGPT Supabase and next Js.
 
 
 > **Warning**
