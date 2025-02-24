@@ -2,8 +2,8 @@ import { type Metadata } from "next"
 
 import type { Tables } from "@/types/database.types"
 import { getTripsByUserId, getTripsPrivate } from "@/lib/supabase-queries"
-import { columns } from "@/components/dashboard/trip-columns"
 import { DataTable } from "@/components/dashboard/data-table"
+import { columns } from "@/components/dashboard/trip-columns"
 import {
   PageHeader,
   PageHeaderDescription,
@@ -21,7 +21,6 @@ export const metadata: Metadata = {
 }
 
 export default async function TripPage() {
-
   const trips = await getTripsByUserId()
   const data = await getTripsPrivate()
 
@@ -30,8 +29,8 @@ export default async function TripPage() {
       <PageHeader>
         <PageHeaderHeading>Your Travel Plans</PageHeaderHeading>
         <PageHeaderDescription>
-          Explore your saved trips in one place. Your adventure and journey across the world starts
-          here!
+          Explore your saved trips in one place. Your adventure and journey
+          across the world starts here!
         </PageHeaderDescription>
       </PageHeader>
       {data && <DataTable columns={columns} data={data} />}

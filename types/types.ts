@@ -39,7 +39,12 @@ export interface Trip {
   budgetBreakdown: Record<string, number>
   itinerary: Array<{
     day: number
-    activities: Array<{ time: string; activity: string; location: string; estimated_cost: number }>
+    activities: Array<{
+      time: string
+      activity: string
+      location: string
+      estimated_cost: number
+    }>
     recommended_food: {
       restaurant: string
       dish: string

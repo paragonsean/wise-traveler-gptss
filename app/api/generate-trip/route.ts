@@ -3,7 +3,9 @@ import { OpenAI } from "openai"
 export const runtime = "edge"
 
 if (!process.env.OPENAI_API_KEY) {
-  console.error(" Missing OpenAI API Key. Set OPENAI_API_KEY in environment variables.")
+  console.error(
+    " Missing OpenAI API Key. Set OPENAI_API_KEY in environment variables."
+  )
   throw new Error("Missing OpenAI API Key.")
 }
 
@@ -16,11 +18,11 @@ function fixMalformedJson(rawJson: string): string {
   return rawJson
     .replace(/([{,])\s*([\w-]+)\s*:/g, '$1"$2":') //  Ensure keys are quoted
     .replace(/:\s*([\w-]+)([,\n}])/g, ': "$1"$2') //  Fix unquoted string values
-    .replace(/,\s*}/g, '}') //  Remove trailing commas before closing braces
-    .replace(/,\s*]/g, ']') //  Remove trailing commas before closing brackets
-    .replace(/(?<!\w)undefined(?!\w)/g, 'null') //  Replace "undefined" with "null"
+    .replace(/,\s*}/g, "}") //  Remove trailing commas before closing braces
+    .replace(/,\s*]/g, "]") //  Remove trailing commas before closing brackets
+    .replace(/(?<!\w)undefined(?!\w)/g, "null") //  Replace "undefined" with "null"
     .replace(/\\n/g, " ") //  Replace unnecessary new lines
-    .trim();
+    .trim()
 }
 
 export async function POST(req: Request) {
@@ -32,7 +34,9 @@ export async function POST(req: Request) {
 
     if (!prompt) {
       console.warn("⚠️ No prompt provided in request body.")
-      return new Response(JSON.stringify({ error: "Prompt is required" }), { status: 400 })
+      return new Response(JSON.stringify({ error: "Prompt is required" }), {
+        status: 400,
+      })
     }
 
     console.log("Calling OpenAI API with trip planning prompt...")
@@ -44,7 +48,11 @@ export async function POST(req: Request) {
       stream: false, // Disable streaming for debugging
       messages: [
         { role: "user", content: prompt },
-        { role: "system", content: "You are an expert travel planner. Generate a well-formatted JSON travel itinerary. Ensure all JSON properties are properly quoted and formatted." },
+        {
+          role: "system",
+          content:
+            "You are an expert travel planner. Generate a well-formatted JSON travel itinerary. Ensure all JSON properties are properly quoted and formatted.",
+        },
       ],
     })
 
@@ -76,20 +84,43 @@ export async function POST(req: Request) {
         budget: jsonResponse.budget || "Mid-range",
         duration: jsonResponse.duration || 5,
         group_size: jsonResponse.group_size || 1,
-        preferences: jsonResponse.preferences || { adventure: false, luxury: false, nature: false },
-        itinerary: Array.isArray(jsonResponse.itinerary) ? jsonResponse.itinerary.filter((day) => Object.keys(day).length > 0) : [],
-        cost_estimate: jsonResponse.cost_estimate || { accommodation: 0, food: 0, activities: 0, transport: 0, total: 0 }
+        preferences: jsonResponse.preferences || {
+          adventure: false,
+          luxury: false,
+          nature: false,
+        },
+        itinerary: Array.isArray(jsonResponse.itinerary)
+          ? jsonResponse.itinerary.filter((day) => Object.keys(day).length > 0)
+          : [],
+        cost_estimate: jsonResponse.cost_estimate || {
+          accommodation: 0,
+          food: 0,
+          activities: 0,
+          transport: 0,
+          total: 0,
+        },
       }
 
-      console.log(" Final JSON Response:", JSON.stringify(jsonResponse, null, 2))
+      console.log(
+        " Final JSON Response:",
+        JSON.stringify(jsonResponse, null, 2)
+      )
 
-      return new Response(JSON.stringify(jsonResponse), { status: 200, headers: { "Content-Type": "application/json" } })
+      return new Response(JSON.stringify(jsonResponse), {
+        status: 200,
+        headers: { "Content-Type": "application/json" },
+      })
     } catch (error) {
       console.error(" Error parsing OpenAI response as JSON:", error)
-      return new Response(JSON.stringify({ error: "Invalid JSON format received from OpenAI." }), { status: 500 })
+      return new Response(
+        JSON.stringify({ error: "Invalid JSON format received from OpenAI." }),
+        { status: 500 }
+      )
     }
   } catch (error) {
     console.error(" Error in OpenAI request:", error)
-    return new Response(JSON.stringify({ error: "Internal Server Error" }), { status: 500 })
+    return new Response(JSON.stringify({ error: "Internal Server Error" }), {
+      status: 500,
+    })
   }
 }

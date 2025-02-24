@@ -1,4 +1,5 @@
 import { FormData } from "@/types/types"
+
 export function generatePrompt(values: FormData): string {
   const tripPreferences = `
     - Adventure: ${values.adventure ? "Yes" : "No"}

@@ -35,7 +35,8 @@ export function GenerateTrip() {
       const prompt = generatePrompt(values)
       const completion = await complete(prompt)
       setFormValues(values)
-      if (!completion) throw new Error("Failed to generate trip plan. Try again.")
+      if (!completion)
+        throw new Error("Failed to generate trip plan. Try again.")
       try {
         const result = JSON.parse(completion)
         setTrip(result)
@@ -58,7 +59,11 @@ export function GenerateTrip() {
         <div className={cn({ "md:flex md:w-1/3": isLoading || isTripVisible })}>
           <TripForm onSubmit={onSubmit} isLoading={isLoading} />
         </div>
-        <div className={cn({ "md:flex md:flex-col md:w-2/3": isLoading || isTripVisible })}>
+        <div
+          className={cn({
+            "md:flex md:flex-col md:w-2/3": isLoading || isTripVisible,
+          })}
+        >
           <div className="md:flex">
             {!isLoading && trip && <TripCard trip={trip} />}
             {isLoading && <TripCardSkeleton />}

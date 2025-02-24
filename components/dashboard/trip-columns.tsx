@@ -68,18 +68,20 @@ export const columns: ColumnDef<TripTable>[] = [
     header: "Preferences",
     cell: ({ row }) => {
       //  Ensure preferences exist before destructuring
-      const { adventure, luxury, nature } = row.original.preferences || {};
-  
+      const { adventure, luxury, nature } = row.original.preferences || {}
+
       return (
         <div className="flex space-x-2">
           {adventure && <Badge variant="default">Adventure</Badge>}
           {luxury && <Badge variant="secondary">Luxury</Badge>}
           {nature && <Badge variant="outline">Nature</Badge>}
-          {!adventure && !luxury && !nature && <span className="text-muted">No preferences</span>}
+          {!adventure && !luxury && !nature && (
+            <span className="text-muted">No preferences</span>
+          )}
         </div>
-      );
+      )
     },
-  },  
+  },
   {
     id: "actions",
     cell: ({ row }) => {

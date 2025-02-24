@@ -3,10 +3,10 @@ import {
   BatteryLow,
   BatteryMedium,
   Beef,
+  Gem,
+  Plane,
   Vegan,
-  Wallet, 
-  Plane, 
-  Gem 
+  Wallet,
 } from "lucide-react"
 
 export const budgets = [

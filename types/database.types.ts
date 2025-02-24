@@ -58,7 +58,7 @@ export interface Database {
             columns: ["user_id"]
             referencedRelation: "users"
             referencedColumns: ["id"]
-          }
+          },
         ]
       }
       trip_plans: {
@@ -107,7 +107,7 @@ export interface Database {
             columns: ["trip_id"]
             referencedRelation: "trips"
             referencedColumns: ["id"]
-          }
+          },
         ]
       }
     }

@@ -14,8 +14,8 @@ export default function TripNotFound() {
       <PageHeader>
         <PageHeaderHeading>Oops! Lost in Transit</PageHeaderHeading>
         <PageHeaderDescription>
-          It seems like this trip itinerary has gone off the map! 🌍
-          Let’s navigate back and explore another destination.
+          It seems like this trip itinerary has gone off the map! 🌍 Let’s
+          navigate back and explore another destination.
         </PageHeaderDescription>
         <PageActions>
           <Link href="/">

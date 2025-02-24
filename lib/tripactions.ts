@@ -51,43 +51,49 @@ export async function getUserTrips() {
 }
 // Save generated trip plan (Public)
 export async function saveGeneration(generatedTrip) {
-  console.log("Saving generated trip...");
+  console.log("Saving generated trip...")
 
-  const supabase = await supabaseClientPublic();
+  const supabase = await supabaseClientPublic()
   const data = {
     content_json: generatedTrip,
     destination: generatedTrip.destination,
     budget: generatedTrip.budget,
     duration: generatedTrip.duration,
     group_size: generatedTrip.group_size,
-    adventure: generatedTrip.preferences.adventure === "true" || generatedTrip.preferences.adventure === true,  //  Convert to boolean
-    luxury: generatedTrip.preferences.luxury === "true" || generatedTrip.preferences.luxury === true,        //  Convert to boolean
-    nature: generatedTrip.preferences.nature === "true" || generatedTrip.preferences.nature === true,        //  Convert to boolean
+    adventure:
+      generatedTrip.preferences.adventure === "true" ||
+      generatedTrip.preferences.adventure === true, //  Convert to boolean
+    luxury:
+      generatedTrip.preferences.luxury === "true" ||
+      generatedTrip.preferences.luxury === true, //  Convert to boolean
+    nature:
+      generatedTrip.preferences.nature === "true" ||
+      generatedTrip.preferences.nature === true, //  Convert to boolean
     description: generatedTrip.description,
-  };
-
-  const { error } = await supabase.from("generations").insert([data]);
-
-  if (error) {
-    console.error(" Supabase Insert Error (generations):", error);
-    throw new Error("Failed to save generated trip.");
   }
 
-  console.log(" Trip plan saved successfully.");
-  revalidatePath("/");
+  const { error } = await supabase.from("generations").insert([data])
+
+  if (error) {
+    console.error(" Supabase Insert Error (generations):", error)
+    throw new Error("Failed to save generated trip.")
+  }
+
+  console.log(" Trip plan saved successfully.")
+  revalidatePath("/")
 }
 
 // Save user trip (Private)
 export async function saveTrip(generatedTrip) {
-  console.log("Saving user trip...");
+  console.log("Saving user trip...")
 
-  const { userId } = auth();
+  const { userId } = auth()
   if (!userId) {
-    console.error(" User is not authenticated.");
-    throw new Error("User ID not found");
+    console.error(" User is not authenticated.")
+    throw new Error("User ID not found")
   }
 
-  const supabase = await supabaseClient();
+  const supabase = await supabaseClient()
   const data = {
     user_id: userId,
     destination: generatedTrip.destination,
@@ -96,19 +102,25 @@ export async function saveTrip(generatedTrip) {
     budget: generatedTrip.budget,
     duration: generatedTrip.duration,
     group_size: generatedTrip.group_size,
-    adventure: generatedTrip.preferences.adventure === "true" || generatedTrip.preferences.adventure === true,  //  Convert to boolean
-    luxury: generatedTrip.preferences.luxury === "true" || generatedTrip.preferences.luxury === true,        //  Convert to boolean
-    nature: generatedTrip.preferences.nature === "true" || generatedTrip.preferences.nature === true,        //  Convert to boolean
-  };
-
-  const { error } = await supabase.from("trips").insert([data]);
-
-  if (error) {
-    console.error(" Supabase Insert Error (trips):", error);
-    throw new Error("Failed to save the trip.");
+    adventure:
+      generatedTrip.preferences.adventure === "true" ||
+      generatedTrip.preferences.adventure === true, //  Convert to boolean
+    luxury:
+      generatedTrip.preferences.luxury === "true" ||
+      generatedTrip.preferences.luxury === true, //  Convert to boolean
+    nature:
+      generatedTrip.preferences.nature === "true" ||
+      generatedTrip.preferences.nature === true, //  Convert to boolean
   }
 
-  console.log(" Trip saved successfully.");
+  const { error } = await supabase.from("trips").insert([data])
+
+  if (error) {
+    console.error(" Supabase Insert Error (trips):", error)
+    throw new Error("Failed to save the trip.")
+  }
+
+  console.log(" Trip saved successfully.")
 }
 
 // Delete user trip (Private)

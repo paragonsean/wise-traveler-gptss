@@ -26,9 +26,7 @@ export default async function TripPage({ params }: TripPageProps) {
   const { getToken } = auth()
   const id = params.id
   const supabaseAccessToken = await getToken({ template: "supabase" })
-  const [trip] = await Promise.all([
-    getTripPrivate(id),
-  ])
+  const [trip] = await Promise.all([getTripPrivate(id)])
 
   if (!trip) {
     notFound()

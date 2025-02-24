@@ -23,7 +23,9 @@ export function DataTableToolbar<TData>({
         {/* 🔹 Updated Filter Placeholder for Trips */}
         <Input
           placeholder="Search trips..."
-          value={(table.getColumn("destination")?.getFilterValue() as string) ?? ""}
+          value={
+            (table.getColumn("destination")?.getFilterValue() as string) ?? ""
+          }
           onChange={(event) =>
             table.getColumn("destination")?.setFilterValue(event.target.value)
           }

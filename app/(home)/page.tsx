@@ -19,7 +19,8 @@ export default async function IndexPage() {
           </span>
         </PageHeaderHeading>
         <PageHeaderDescription>
-          Free. Open Source. AI-powered trip planner, helping you create personalized itineraries effortlessly.
+          Free. Open Source. AI-powered trip planner, helping you create
+          personalized itineraries effortlessly.
         </PageHeaderDescription>
       </PageHeader>
       <GenerateTrip />

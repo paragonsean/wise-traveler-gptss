@@ -8,7 +8,9 @@ export async function RecentTrips() {
     if (!trips || trips.length === 0) {
       return (
         <div className="text-center text-muted-foreground">
-          <h2 className="text-2xl font-semibold tracking-tight">Recent Trips</h2>
+          <h2 className="text-2xl font-semibold tracking-tight">
+            Recent Trips
+          </h2>
           <p className="mt-2">No recent trips found.</p>
         </div>
       )
@@ -29,7 +31,9 @@ export async function RecentTrips() {
     return (
       <div className="text-center text-destructive">
         <h2 className="text-2xl font-semibold tracking-tight">Recent Trips</h2>
-        <p className="mt-2">Failed to load recent trips. Please try again later.</p>
+        <p className="mt-2">
+          Failed to load recent trips. Please try again later.
+        </p>
       </div>
     )
   }

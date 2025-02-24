@@ -13,8 +13,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import {  tripInfo } from "@/components/trip/trip-constants"
 import { SaveTripButton } from "@/components/trip/save-trip"
+import { tripInfo } from "@/components/trip/trip-constants"
 
 interface GeneratedTripContentProps {
   trip: Trip
@@ -43,8 +43,12 @@ export function TripCard({ trip }: GeneratedTripContentProps) {
   return (
     <Card className="w-full">
       <CardHeader>
-        <CardTitle className="text-xl font-bold">{trip?.destination || "Unknown Destination"}</CardTitle>
-        <CardDescription>{trip?.description || "No description available."}</CardDescription>
+        <CardTitle className="text-xl font-bold">
+          {trip?.destination || "Unknown Destination"}
+        </CardTitle>
+        <CardDescription>
+          {trip?.description || "No description available."}
+        </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4 text-sm">
         {/* Budget Chart */}
@@ -53,9 +57,27 @@ export function TripCard({ trip }: GeneratedTripContentProps) {
             <h3 className="text-lg font-semibold">Budget Breakdown</h3>
             <ResponsiveContainer width="100%" height={75}>
               <BarChart data={budgetChartData} barCategoryGap="20%">
-                <XAxis dataKey="label" stroke="#94a3b8" fontSize={12} height={15} tickLine={false} axisLine={false} />
-                <YAxis stroke="#94a3b8" fontSize={12} width={30} tickLine={false} axisLine={false} tickFormatter={(value) => `$${value}`} />
-                <Bar dataKey="value" fill="currentColor" radius={[4, 4, 0, 0]} />
+                <XAxis
+                  dataKey="label"
+                  stroke="#94a3b8"
+                  fontSize={12}
+                  height={15}
+                  tickLine={false}
+                  axisLine={false}
+                />
+                <YAxis
+                  stroke="#94a3b8"
+                  fontSize={12}
+                  width={30}
+                  tickLine={false}
+                  axisLine={false}
+                  tickFormatter={(value) => `$${value}`}
+                />
+                <Bar
+                  dataKey="value"
+                  fill="currentColor"
+                  radius={[4, 4, 0, 0]}
+                />
               </BarChart>
             </ResponsiveContainer>
           </div>
@@ -68,7 +90,8 @@ export function TripCard({ trip }: GeneratedTripContentProps) {
             {trip?.activities?.length ? (
               trip.activities.map((activity, i) => (
                 <li key={`activity-${i}`}>
-                  {activity?.name || "Activity"} - {activity?.time || "Time TBD"}
+                  {activity?.name || "Activity"} -{" "}
+                  {activity?.time || "Time TBD"}
                 </li>
               ))
             ) : (
@@ -89,7 +112,10 @@ export function TripCard({ trip }: GeneratedTripContentProps) {
                     <ul>
                       {dayPlan.activities.map((activity, j) => (
                         <li key={`activity-${i}-${j}`}>
-                          {activity?.time || "Time TBD"} - {activity?.activity || "Activity TBD"} at {activity?.location || "Unknown"} (Estimated cost: ${activity?.estimated_cost || 0})
+                          {activity?.time || "Time TBD"} -{" "}
+                          {activity?.activity || "Activity TBD"} at{" "}
+                          {activity?.location || "Unknown"} (Estimated cost: $
+                          {activity?.estimated_cost || 0})
                         </li>
                       ))}
                     </ul>
@@ -97,7 +123,11 @@ export function TripCard({ trip }: GeneratedTripContentProps) {
                     <p>No activities planned.</p>
                   )}
                   <p>
-                    <strong>Recommended Food:</strong> {dayPlan?.recommended_food?.restaurant || "No recommendation"} - {dayPlan?.recommended_food?.dish || "N/A"} (Estimated cost: ${dayPlan?.recommended_food?.estimated_cost || 0})
+                    <strong>Recommended Food:</strong>{" "}
+                    {dayPlan?.recommended_food?.restaurant ||
+                      "No recommendation"}{" "}
+                    - {dayPlan?.recommended_food?.dish || "N/A"} (Estimated
+                    cost: ${dayPlan?.recommended_food?.estimated_cost || 0})
                   </p>
                 </li>
               ))

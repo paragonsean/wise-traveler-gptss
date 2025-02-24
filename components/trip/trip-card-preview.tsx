@@ -19,13 +19,12 @@ interface TripCardProps {
   isPrivate?: boolean
 }
 
-export function TripCardPreview({
-  trip,
-  isPrivate = false,
-}: TripCardProps) {
+export function TripCardPreview({ trip, isPrivate = false }: TripCardProps) {
   const isInternational = trip?.adventure === true
   const duration = trip?.duration?.toString().replaceAll(/[^0-9]/g, "")
-  const href = isPrivate ? `/dashboard/my-trips/${trip.id}` : `/trips/${trip.id}`
+  const href = isPrivate
+    ? `/dashboard/my-trips/${trip.id}`
+    : `/trips/${trip.id}`
 
   return (
     <Link href={href}>

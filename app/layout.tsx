@@ -3,7 +3,6 @@ import "@/styles/globals.css"
 import { Metadata, Viewport } from "next"
 import { ClerkProvider } from "@clerk/nextjs"
 import { Analytics } from "@vercel/analytics/react"
-
 import { Toaster } from "sonner"
 
 import { siteConfig } from "@/config/site"
@@ -87,7 +86,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
         >
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
             {children}
-         
+
             <Analytics />
           </ThemeProvider>
           <Toaster richColors />
