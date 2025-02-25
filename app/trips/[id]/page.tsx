@@ -10,14 +10,13 @@ import {
 import { TripCard } from "@/components/trip/trip-card"
 
 interface TripPageProps {
-  params: {
+  params: Promise<{
     id: string
-  }
+  }>
 }
 
-export async function generateMetadata({
-  params,
-}: TripPageProps): Promise<Metadata> {
+export async function generateMetadata(props: TripPageProps): Promise<Metadata> {
+  const params = await props.params;
   const id = params.id
   const [trip] = await Promise.all([getTripPublic(id)])
 
@@ -32,7 +31,8 @@ export async function generateMetadata({
   }
 }
 
-export default async function TripPage({ params }: TripPageProps) {
+export default async function TripPage(props: TripPageProps) {
+  const params = await props.params;
   const id = params.id
   const [trip] = await Promise.all([getTripPublic(id)])
 
