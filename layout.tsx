@@ -2,6 +2,7 @@ import "@/styles/globals.css"
 
 import { Metadata, Viewport } from "next"
 import { ClerkProvider } from "@clerk/nextjs"
+import { auth } from "@clerk/nextjs/server" // ✅ Correct Import
 import { Toaster } from "sonner"
 
 import { siteConfig } from "@/config/site"
@@ -10,7 +11,7 @@ import { cn } from "@/lib/utils"
 import { ThemeProvider } from "@/components/theme-provider"
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://wise-traveler.app"), //  Corrected Site URL
+  metadataBase: new URL("https://wise-traveler.app"),
   title: {
     default: siteConfig.name,
     template: `%s - ${siteConfig.name}`,
@@ -27,7 +28,7 @@ export const metadata: Metadata = {
   ],
   authors: [
     {
-      name: "Your Name", //  Update with correct author info
+      name: "Your Name",
       url: "https://github.com/yourprofile",
     },
   ],
@@ -53,7 +54,7 @@ export const metadata: Metadata = {
     title: siteConfig.name,
     description: siteConfig.description,
     images: [siteConfig.ogImage],
-    creator: "@wise_traveler", //  Update Twitter Handle
+    creator: "@wise_traveler",
   },
   icons: {
     icon: "/favicon.ico",
@@ -73,6 +74,8 @@ interface RootLayoutProps {
 }
 
 export default async function RootLayout({ children }: RootLayoutProps) {
+  const { userId } = await auth() // ✅ Correct usage
+
   return (
     <ClerkProvider>
       <html lang="en" suppressHydrationWarning>
@@ -84,8 +87,8 @@ export default async function RootLayout({ children }: RootLayoutProps) {
           )}
         >
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+            {userId ? <p>Welcome back!</p> : <p>Please sign in.</p>}
             {children}
-
           </ThemeProvider>
           <Toaster richColors />
         </body>

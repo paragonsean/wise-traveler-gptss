@@ -1,34 +1,34 @@
-import { NextResponse } from "next/server"
-import { authMiddleware } from "@clerk/nextjs"
+import { NextResponse } from "next/server";
+import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 
-export default authMiddleware({
-  publicRoutes: [
-    "/",
-    "/sign-in(.*)",
-    "/sign-up(.*)",
-    "/dashboard(.*)",
-    "/dashboard",
-    "/sign-out",
-    "/api(.*)",
-    "/trips(.*)",
-  ],
-  async afterAuth(auth, req) {
-    if (auth.isPublicRoute) {
-      //  For public routes, we don't need to do anything
-      return NextResponse.next()
-    }
+const publicRoutes = createRouteMatcher([
+  "/",
+  "/sign-in(.*)",
+  "/sign-up(.*)",
+  "/dashboard(.*)",
+  "/dashboard",
+  "/sign-out",
+  "/api(.*)",
+  "/trips(.*)"
+]);
 
-    const url = new URL(req.nextUrl.origin)
+export default clerkMiddleware(async (auth, req) => {
+  if (publicRoutes(req)) {
+    // For public routes, no need for authentication.
+    return NextResponse.next();
+  }
+  
+  const { userId } = await auth();
+  if (!userId) {
+    // For non-public routes, if there's no authenticated user, redirect to sign-in.
+    const url = new URL(req.nextUrl.origin);
+    url.pathname = "/sign-in";
+    return NextResponse.redirect(url);
+  }
 
-    if (!auth.userId) {
-      //  If user tries to access a private route without being authenticated,
-      //  redirect them to the sign in page
-      url.pathname = "/sign-in"
-      return NextResponse.redirect(url)
-    }
-  },
-})
+  return NextResponse.next();
+});
 
 export const config = {
   matcher: ["/((?!.*\\..*|_next).*)", "/", "/(api|trpc)(.*)"],
-}
+};

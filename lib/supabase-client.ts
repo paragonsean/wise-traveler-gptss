@@ -1,4 +1,4 @@
-import { auth } from "@clerk/nextjs"
+import { auth } from "@clerk/nextjs/server"
 import { createClient } from "@supabase/supabase-js"
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
@@ -8,7 +8,7 @@ const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_KEY!
 export async function supabaseClient() {
   console.log("Initializing authenticated Supabase client...")
 
-  const { getToken } = auth()
+  const { getToken } = await auth();
   const supabaseAccessToken = await getToken({ template: "supabase" })
 
   if (!supabaseAccessToken) {

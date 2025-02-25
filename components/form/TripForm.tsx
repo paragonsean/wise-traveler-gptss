@@ -40,7 +40,10 @@ export function TripForm({ onSubmit, isLoading }: TripFormProps) {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-6">
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="w-full space-y-6"
+      >
         <FormField
           control={form.control}
           name="destination"
@@ -49,17 +52,18 @@ export function TripForm({ onSubmit, isLoading }: TripFormProps) {
               {showAdditionalFields && (
                 <TripFormLabel
                   stepIndex="1"
-                  labelIndex="Where do you want to travel?"
+                  labelIndex="What destinations are you considering?"
                 />
               )}
               <FormControl>
                 <div className="relative">
                   <Input
-                    placeholder="Paris, Tokyo, New York..."
+                    placeholder="Paris, Tokyo, New York"
                     {...field}
                     onClick={() => setShowAdditionalFields(true)}
                     className="rounded-xl bg-primary text-secondary shadow-lg placeholder:text-secondary/70"
                   />
+
                   <Icons.input className="absolute right-2.5 top-3 size-4 text-secondary" />
                 </div>
               </FormControl>
@@ -76,57 +80,58 @@ export function TripForm({ onSubmit, isLoading }: TripFormProps) {
                 <FormItem className="space-y-3">
                   <TripFormLabel
                     stepIndex="2"
-                    labelIndex="How many days is your trip?"
+                    labelIndex="How many days can you travel?"
                   />
                   <FormControl>
                     <Slider
                       id="trip-duration"
                       aria-label="Choose trip duration"
-                      defaultValue={[5]} // Keep an array for defaultValue
+                      defaultValue={[5]}
                       max={30}
                       step={1}
                       min={1}
-                      onValueChange={(value) => field.onChange(value[0])} //  Extract first element from array
+                      onValueChange={(value) => field.onChange(value[0])}
+                      {...field}
+                      value={[field.value]}
                     >
-                      <SliderThumb aria-label="Trip duration"></SliderThumb>
+                      <SliderThumb aria-label="Trip duration" />
                     </Slider>
                   </FormControl>
                   <FormDescription className="flex flex-row-reverse">
-                    {field.value} days
+                    📅 {field.value} days
                   </FormDescription>
                 </FormItem>
               )}
             />
-
             <FormItem>
               <TripFormLabel
                 stepIndex="3"
-                labelIndex="Who are you traveling with?"
+                labelIndex="How many people are traveling?"
               />
               <RadioGroupFormField
                 form={form}
-                name="group_size"
+                name="people"
                 options={options}
               />
             </FormItem>
             <FormItem>
               <TripFormLabel
                 stepIndex="4"
-                labelIndex="What’s your budget range?"
+                labelIndex="What is your preferred travel style?"
               />
-              <SelectFormField form={form} name="budget" />
+              <SelectFormField form={form} name="difficulty" />
             </FormItem>
             <FormItem>
               <TripFormLabel
                 stepIndex="5"
-                labelIndex="Do you have any trip preferences?"
+                labelIndex="Any specific preferences for your trip?"
               />
               <SwitchFormField
                 form={form}
                 name="adventure"
-                label="🏕️ Adventure"
+                label="🚀 Adventure"
               />
-              <SwitchFormField form={form} name="luxury" label="🏨 Luxury" />
+              <SwitchFormField form={form} name="luxury" label="💎 Luxury" />
               <SwitchFormField form={form} name="nature" label="🌿 Nature" />
             </FormItem>
             {isLoading ? (

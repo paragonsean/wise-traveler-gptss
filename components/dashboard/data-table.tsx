@@ -105,7 +105,7 @@ export function DataTable<TData, TValue>({
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  No trips found.
+                  No results.
                 </TableCell>
               </TableRow>
             )}

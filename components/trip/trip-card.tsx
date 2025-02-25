@@ -4,7 +4,7 @@ import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis } from "recharts"
 import { toast } from "sonner"
 
 import { Trip } from "@/types/types"
-import { saveTrip } from "@/lib/tripactions"
+import { saveTrip } from "@/lib/actions"
 import {
   Card,
   CardContent,
@@ -13,50 +13,52 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import { SaveTripButton } from "@/components/trip/save-trip"
 import { tripInfo } from "@/components/trip/trip-constants"
+import { SaveTripButton } from "@/components/trip/save-trip"
 
 interface GeneratedTripContentProps {
   trip: Trip
 }
-export function TripCard({ trip }: GeneratedTripContentProps) {
-  if (!trip) {
-    return <p className="text-center text-gray-500">No trip data available.</p>
-  }
 
-  const budgetChartData = trip?.budgetBreakdown
-    ? tripInfo.map((category) => ({
-        label: category.value,
-        value: trip.budgetBreakdown?.[category.value] || 0, //  Prevent undefined errors
-      }))
-    : []
+export function TripCard({ trip }: GeneratedTripContentProps) {
+  // Build data for a bar chart from numeric trip metrics.
+  const metricChartData = [] // Update if your Trip has numeric metrics
 
   const onSaveTrip = async () => {
-    if (!trip) return
     toast.promise(saveTrip(trip), {
       loading: "Saving...",
-      success: "Awesome! Trip saved successfully.",
-      error: "Oops! Sign in to save trips!",
+      success: () => "Cool! Trip saved successfully.",
+      error: "Oh No! Sign-In to save trips!",
     })
   }
 
   return (
     <Card className="w-full">
       <CardHeader>
-        <CardTitle className="text-xl font-bold">
-          {trip?.destination || "Unknown Destination"}
-        </CardTitle>
-        <CardDescription>
-          {trip?.description || "No description available."}
-        </CardDescription>
+        <CardTitle className="text-xl font-bold">{trip?.title}</CardTitle>
+        <CardDescription>{trip?.description}</CardDescription>
       </CardHeader>
       <CardContent className="space-y-4 text-sm">
-        {/* Budget Chart */}
-        {budgetChartData.length > 0 && (
+        <div className="grid space-y-6 rounded-lg border p-3 md:grid-cols-2 md:space-x-4 md:space-y-0">
+          {/* Trip Overview Section */}
+          <div className="grid grid-cols-2 gap-4 md:gap-0">
+            <div className="col-span-2 mb-2 grid">
+              <h3 className="text-lg font-semibold">Overview</h3>
+            </div>
+            {tripInfo.map((info, index) => (
+              <div key={index} className="flex gap-2 text-muted-foreground">
+                {info.icon}
+                <span>
+                  {trip[info.value]} {info.additionalText}
+                </span>
+              </div>
+            ))}
+          </div>
+          {/* Trip Metrics BarChart Section */}
           <div className="grid grid-cols-1 gap-4 transition-all md:gap-0">
-            <h3 className="text-lg font-semibold">Budget Breakdown</h3>
+            <h3 className="text-lg font-semibold">Metrics</h3>
             <ResponsiveContainer width="100%" height={75}>
-              <BarChart data={budgetChartData} barCategoryGap="20%">
+              <BarChart data={metricChartData} barCategoryGap="20%">
                 <XAxis
                   dataKey="label"
                   stroke="#94a3b8"
@@ -71,7 +73,7 @@ export function TripCard({ trip }: GeneratedTripContentProps) {
                   width={30}
                   tickLine={false}
                   axisLine={false}
-                  tickFormatter={(value) => `$${value}`}
+                  tickFormatter={(value) => `${value}`}
                 />
                 <Bar
                   dataKey="value"
@@ -81,58 +83,56 @@ export function TripCard({ trip }: GeneratedTripContentProps) {
               </BarChart>
             </ResponsiveContainer>
           </div>
-        )}
-
-        {/* Activities Section */}
+        </div>
+        {/* Itinerary Section */}
         <div className="space-y-2">
-          <h3 className="text-lg font-semibold">Planned Activities</h3>
+          <h3 className="text-lg font-semibold">Itinerary</h3>
           <ol className="list-disc pl-6">
-            {trip?.activities?.length ? (
-              trip.activities.map((activity, i) => (
-                <li key={`activity-${i}`}>
-                  {activity?.name || "Activity"} -{" "}
-                  {activity?.time || "Time TBD"}
+            {(trip?.itinerary || []).map(
+              (
+                day: {
+                  day: number
+                  activities: {
+                    time: string
+                    activity: string
+                    location: string
+                    estimated_cost: number
+                  }[]
+                  recommended_food: {
+                    restaurant: string
+                    dish: string
+                    estimated_cost: number
+                  }
+                },
+                i: number
+              ) => (
+                <li key={`day-${day.day}-${i}`}>
+                  Day {day.day}
+                  <ul>
+                    {day.activities.map((activity, j) => (
+                      <li key={`activity-${j}`}>
+                        {activity.time} - {activity.activity} at {activity.location} (Estimated Cost: ${activity.estimated_cost})
+                      </li>
+                    ))}
+                    <li>
+                      Recommended Food: {day.recommended_food.restaurant} -{" "}
+                      {day.recommended_food.dish} (Estimated Cost: $
+                      {day.recommended_food.estimated_cost})
+                    </li>
+                  </ul>
                 </li>
-              ))
-            ) : (
-              <p>No planned activities yet.</p>
+              )
             )}
           </ol>
         </div>
-
-        {/* Itinerary Section */}
+        {/* Plan Details Section */}
         <div className="space-y-2">
-          <h3 className="text-lg font-semibold">Daily Itinerary</h3>
+          <h3 className="text-lg font-semibold">Plan Details</h3>
           <ol className="list-decimal pl-6">
-            {trip?.itinerary?.length ? (
-              trip.itinerary.map((dayPlan, i) => (
-                <li key={`dayPlan-${i}`}>
-                  <strong>Day {dayPlan?.day || "N/A"}:</strong> <br />
-                  {dayPlan?.activities?.length ? (
-                    <ul>
-                      {dayPlan.activities.map((activity, j) => (
-                        <li key={`activity-${i}-${j}`}>
-                          {activity?.time || "Time TBD"} -{" "}
-                          {activity?.activity || "Activity TBD"} at{" "}
-                          {activity?.location || "Unknown"} (Estimated cost: $
-                          {activity?.estimated_cost || 0})
-                        </li>
-                      ))}
-                    </ul>
-                  ) : (
-                    <p>No activities planned.</p>
-                  )}
-                  <p>
-                    <strong>Recommended Food:</strong>{" "}
-                    {dayPlan?.recommended_food?.restaurant ||
-                      "No recommendation"}{" "}
-                    - {dayPlan?.recommended_food?.dish || "N/A"} (Estimated
-                    cost: ${dayPlan?.recommended_food?.estimated_cost || 0})
-                  </p>
-                </li>
-              ))
-            ) : (
-              <p>No itinerary available.</p>
+            {(trip?.plan || []).map(
+              (step: { step: number; description: string }, i: number) => (
+                <li key={`${step.step}-${i}`}>{step.description}</li>
+              )
             )}
           </ol>
         </div>

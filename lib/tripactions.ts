@@ -1,7 +1,7 @@
 "use server"
 
 import { revalidatePath } from "next/cache"
-import { auth } from "@clerk/nextjs"
+import { auth } from "@clerk/nextjs/server"
 
 import { supabaseClient, supabaseClientPublic } from "@/lib/supabase-client"
 
@@ -9,7 +9,7 @@ import { supabaseClient, supabaseClientPublic } from "@/lib/supabase-client"
 export async function getUserTrips() {
   console.log("Fetching user-specific trips...")
 
-  const { userId } = auth()
+  const { userId } = await auth();
   if (!userId) {
     console.error("User is not authenticated.")
     return { trips: [], data: [] }
@@ -87,7 +87,7 @@ export async function saveGeneration(generatedTrip) {
 export async function saveTrip(generatedTrip) {
   console.log("Saving user trip...")
 
-  const { userId } = auth()
+  const { userId } = await auth();
   if (!userId) {
     console.error(" User is not authenticated.")
     throw new Error("User ID not found")
@@ -127,7 +127,7 @@ export async function saveTrip(generatedTrip) {
 export async function deleteTrip(id: string) {
   console.log("Deleting trip with ID:", id)
 
-  const { userId } = auth()
+  const { userId } = await auth();
   if (!userId) {
     console.error("User is not authenticated.")
     throw new Error("User ID not found")

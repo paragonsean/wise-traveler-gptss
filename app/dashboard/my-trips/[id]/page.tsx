@@ -1,6 +1,6 @@
 import { type Metadata } from "next"
 import { notFound } from "next/navigation"
-import { auth } from "@clerk/nextjs"
+import { auth } from "@clerk/nextjs/server"
 
 import { getTripPrivate } from "@/lib/supabase-queries"
 import {
@@ -23,9 +23,8 @@ interface TripPageProps {
 }
 
 export default async function TripPage({ params }: TripPageProps) {
-  const { getToken } = auth()
+  const { getToken } = await auth();
   const id = params.id
-  const supabaseAccessToken = await getToken({ template: "supabase" })
   const [trip] = await Promise.all([getTripPrivate(id)])
 
   if (!trip) {

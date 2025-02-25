@@ -2,9 +2,9 @@ import {
   BatteryFull,
   BatteryLow,
   BatteryMedium,
-  Beef,
   Gem,
   Plane,
+  TreePalm,
   Vegan,
   Wallet,
 } from "lucide-react"
@@ -41,9 +41,10 @@ export const statuses = [
   {
     label: "Nature",
     value: "nature",
-    icon: Gem,
+    icon: TreePalm,
   },
 ]
+
 export const difficulties = [
   {
     value: "easy",
@@ -56,8 +57,36 @@ export const difficulties = [
     icon: BatteryMedium,
   },
   {
-    value: "Expert",
-    label: "expert",
+    value: "expert",
+    label: "Expert",
     icon: BatteryFull,
+  },
+]
+
+export const destinations = [
+  {
+    value: "paris",
+    label: "Paris",
+    icon: Plane,
+  },
+  {
+    value: "tokyo",
+    label: "Tokyo",
+    icon: Plane,
+  },
+  {
+    value: "new-york",
+    label: "New York",
+    icon: Plane,
+  },
+  {
+    value: "bali",
+    label: "Bali",
+    icon: TreePalm,
+  },
+  {
+    value: "rome",
+    label: "Rome",
+    icon: Plane,
   },
 ]

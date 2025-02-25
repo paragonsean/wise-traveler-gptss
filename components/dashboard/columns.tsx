@@ -5,7 +5,7 @@ import { ColumnDef } from "@tanstack/react-table"
 import { MoreHorizontal } from "lucide-react"
 import { toast } from "sonner"
 
-import { deleteTrip } from "@/lib/tripactions"
+import { deleteTrip } from "@/lib/actions"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import {
@@ -29,13 +29,11 @@ export interface TripTable {
   destination: string
   description: string
   duration: number
-  budget: string
-  group_size: string
-  preferences: {
-    adventure: boolean
-    luxury: boolean
-    nature: boolean
-  }
+  budget: "Budget" | "Mid-range" | "Luxury"
+  group_size: "Solo" | "Couple" | "Small Group" | "Large Group"
+  adventure: boolean
+  luxury: boolean
+  nature: boolean
 }
 
 export const columns: ColumnDef<TripTable>[] = [
@@ -58,26 +56,16 @@ export const columns: ColumnDef<TripTable>[] = [
     ),
   },
   {
-    accessorKey: "group_size",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Group Size" />
-    ),
-  },
-  {
-    accessorKey: "preferences",
+    accessorKey: "status",
     header: "Preferences",
     cell: ({ row }) => {
-      //  Ensure preferences exist before destructuring
-      const { adventure, luxury, nature } = row.original.preferences || {}
+      const { adventure, luxury, nature } = row.original
 
       return (
-        <div className="flex space-x-2">
+        <div className="flex gap-2">
           {adventure && <Badge variant="default">Adventure</Badge>}
           {luxury && <Badge variant="secondary">Luxury</Badge>}
-          {nature && <Badge variant="outline">Nature</Badge>}
-          {!adventure && !luxury && !nature && (
-            <span className="text-muted">No preferences</span>
-          )}
+          {nature && <Badge variant="secondary">Nature</Badge>}
         </div>
       )
     },

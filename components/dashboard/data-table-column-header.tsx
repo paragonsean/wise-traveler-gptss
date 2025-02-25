@@ -1,5 +1,3 @@
-"use client"
-
 import { Column } from "@tanstack/react-table"
 import { ArrowDown, ArrowUp, ChevronsUpDown, EyeOff } from "lucide-react"
 
@@ -50,16 +48,16 @@ export function DataTableColumnHeader<TData, TValue>({
         <DropdownMenuContent align="start">
           <DropdownMenuItem onClick={() => column.toggleSorting(false)}>
             <ArrowUp className="mr-2 size-3.5 text-muted-foreground/70" />
-            Ascending
+            Asc
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => column.toggleSorting(true)}>
             <ArrowDown className="mr-2 size-3.5 text-muted-foreground/70" />
-            Descending
+            Desc
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem onClick={() => column.toggleVisibility(false)}>
             <EyeOff className="mr-2 size-3.5 text-muted-foreground/70" />
-            Hide Column
+            Hide
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

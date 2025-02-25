@@ -1,4 +1,5 @@
 import * as z from "zod"
+import { ReactNode } from "react"
 
 export interface NavItem {
   title: string
@@ -33,6 +34,8 @@ export const defaultValues: FormData = {
   nature: true, // Assume nature trips are default
 }
 export interface Trip {
+  title: ReactNode
+  plan: any
   id: string
   destination: string
   description: string

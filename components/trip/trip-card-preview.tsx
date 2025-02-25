@@ -14,14 +14,24 @@ import {
 
 type Trip = Tables<"trips">
 
-interface TripCardProps {
+interface TripCardPreviewProps {
   trip: Trip
   isPrivate?: boolean
 }
 
-export function TripCardPreview({ trip, isPrivate = false }: TripCardProps) {
-  const isInternational = trip?.adventure === true
-  const duration = trip?.duration?.toString().replaceAll(/[^0-9]/g, "")
+export function TripCardPreview({
+  trip,
+  isPrivate = false,
+}: TripCardPreviewProps) {
+  // Determine which badges to show based on trip preferences.
+  const isAdventure = trip?.adventure
+  const isLuxury = trip?.luxury
+  const isNature = trip?.nature
+
+  // Use trip.duration (assumed to be in days) for display.
+  const duration = trip?.duration
+
+  // Set URL based on whether the trip is private.
   const href = isPrivate
     ? `/dashboard/my-trips/${trip.id}`
     : `/trips/${trip.id}`
@@ -40,10 +50,19 @@ export function TripCardPreview({ trip, isPrivate = false }: TripCardProps) {
           </div>
         </CardHeader>
         <CardContent>
-          <div className="flex space-x-2">
-            <Badge>{trip?.budget}</Badge>
-            <Badge variant="secondary">{duration} days</Badge>
-            {isInternational && <Badge variant="default">International</Badge>}
+          <div className="flex flex-wrap items-center gap-2">
+            {isAdventure && <Badge variant="default">Adventure</Badge>}
+            {isLuxury && <Badge variant="secondary">Luxury</Badge>}
+            {isNature && <Badge variant="secondary">Nature</Badge>}
+            {duration !== undefined && (
+              <Badge variant="outline">Duration: {duration} days</Badge>
+            )}
+            {trip?.group_size && (
+              <Badge variant="outline">Group: {trip.group_size}</Badge>
+            )}
+            {trip?.budget && (
+              <Badge variant="outline">Budget: {trip.budget}</Badge>
+            )}
           </div>
         </CardContent>
       </Card>

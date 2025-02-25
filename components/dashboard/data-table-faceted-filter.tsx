@@ -41,6 +41,16 @@ export function DataTableFacetedFilter<TData, TValue>({
   const facets = column?.getFacetedUniqueValues()
   const selectedValues = new Set(column?.getFilterValue() as string[])
 
+  const toggleSelection = (value: string) => {
+    const newSelectedValues = new Set(selectedValues) // ✅ Create a new Set instance
+    if (newSelectedValues.has(value)) {
+      newSelectedValues.delete(value)
+    } else {
+      newSelectedValues.add(value)
+    }
+    column?.setFilterValue(newSelectedValues.size ? Array.from(newSelectedValues) : undefined)
+  }
+
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -91,20 +101,7 @@ export function DataTableFacetedFilter<TData, TValue>({
               {options.map((option) => {
                 const isSelected = selectedValues.has(option.value)
                 return (
-                  <CommandItem
-                    key={option.value}
-                    onSelect={() => {
-                      if (isSelected) {
-                        selectedValues.delete(option.value)
-                      } else {
-                        selectedValues.add(option.value)
-                      }
-                      const filterValues = Array.from(selectedValues)
-                      column?.setFilterValue(
-                        filterValues.length ? filterValues : undefined
-                      )
-                    }}
-                  >
+                  <CommandItem key={option.value} onSelect={() => toggleSelection(option.value)}>
                     <div
                       className={cn(
                         "mr-2 flex size-4 items-center justify-center rounded-sm border border-primary",
