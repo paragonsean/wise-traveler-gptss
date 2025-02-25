@@ -6,9 +6,17 @@ const publicRoutes = createRouteMatcher([
   "/sign-in(.*)",
   "/sign-up(.*)",
   "/dashboard(.*)",
-  "/dashboard",
+  "/dashboard/account(.*)",
+  "/dashboard/account/security(.*)",
   "/sign-out",
+  "/dashboard/account/[[...rest]]/page.tsx",
+  "/dashboard/my-trips(.*)",
+  "/dashboard/my-trips/[[...rest]]/page.tsx",
+  "/dashboard/trips(.*)",
+  "/dashboard/trips/[[...rest]]/page.tsx",
   "/api(.*)",
+  "/my-trips(.*)",
+  "/my-trips/[[...rest]]/page.tsx",
   "/trips(.*)",
 ])
 
