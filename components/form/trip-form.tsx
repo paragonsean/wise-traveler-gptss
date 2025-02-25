@@ -26,8 +26,8 @@ import { SwitchFormField } from "@/components/form/switch-form-field"
 import { Icons } from "@/components/icons"
 
 export interface TripFormProps {
-  isLoading: boolean;
-  onSubmit: (values: FormData) => Promise<void>;
+  isLoading: boolean
+  onSubmit: (values: FormData) => Promise<void>
 }
 
 export function TripForm({ onSubmit, isLoading }: TripFormProps) {
@@ -40,10 +40,7 @@ export function TripForm({ onSubmit, isLoading }: TripFormProps) {
 
   return (
     <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit(onSubmit)}
-        className="w-full space-y-6"
-      >
+      <form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-6">
         <FormField
           control={form.control}
           name="destination"
