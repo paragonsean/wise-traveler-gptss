@@ -5,7 +5,10 @@ interface TripFormLabelProps {
   labelIndex: string
 }
 
-export function TripFormLabel({ stepIndex, labelIndex }: TripFormLabelProps) {
+export function TripFormLabel({
+  stepIndex,
+  labelIndex,
+}: TripFormLabelProps) {
   return (
     <FormLabel className="font-semibold">
       <span className="mr-2 rounded-full bg-primary px-2 font-bold text-background">

@@ -16,15 +16,15 @@ export function TripCardSkeleton() {
     <Card className="w-full animate-pulse">
       <CardHeader>
         <CardTitle className="text-xl font-bold">
-          Your Recipe in the Making!
+          Your Trip is Being Planned!
         </CardTitle>
         <CardDescription>
-          Get ready for a pixel-perfect culinary experience! ✨
+          Sit tight! We are curating an amazing itinerary for you. ✈️🌍
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4 text-sm text-muted-foreground">
         <div className="grid space-y-6 rounded-lg border p-3 md:grid-cols-2 md:space-x-4 md:space-y-0">
-          {/* Recipe Info Section */}
+          {/* Trip Info Section */}
           <div className="grid grid-cols-2 gap-4 md:gap-0">
             <div className="col-span-2 mb-2 grid">
               <h3 className="text-lg font-semibold">Overview</h3>
@@ -36,33 +36,13 @@ export function TripCardSkeleton() {
               </div>
             ))}
           </div>
-          {/* Macros BarChart Section */}
-          <div className="grid grid-cols-1 gap-4 transition-all md:gap-0">
-            <h3 className="text-lg font-semibold">Macros</h3>
-            <div className="grid grid-cols-3 items-end gap-4 transition-all">
-              <Skeleton className="h-12 w-1/3" />
-              <Skeleton className="h-20 w-1/3" />
-              <Skeleton className="h-8 w-1/3" />
-            </div>
+          {/* Activities Section */}
+          <div className="space-y-2">
+            <h3 className="text-lg font-semibold">Activities</h3>
+            <Skeleton className="h-3 w-2/3" />
+            <Skeleton className="h-3 w-1/2" />
+            <Skeleton className="h-3 w-2/3" />
           </div>
-        </div>
-        {/* Ingredients Section */}
-        <div className="space-y-2">
-          <h3 className="text-lg font-semibold">Ingredients</h3>
-          <Skeleton className="skeleton h-3 w-1/5" />
-          <Skeleton className="skeleton h-3 w-1/4" />
-          <Skeleton className="skeleton h-3 w-1/5" />
-          <Skeleton className="skeleton h-3 w-1/4" />
-        </div>
-        {/* Instructions Info Section */}
-        <div className="space-y-2">
-          <h3 className="text-lg font-semibold">Instructions</h3>
-          <Skeleton className="h-3 w-2/3" />
-          <Skeleton className="h-3 w-1/2" />
-          <Skeleton className="h-3 w-2/3" />
-          <Skeleton className="h-3 w-1/3" />
-          <Skeleton className="h-3 w-2/3" />
-          <Skeleton className="h-3 w-1/2" />
         </div>
       </CardContent>
       <CardFooter>

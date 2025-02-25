@@ -1,14 +1,14 @@
 "use client"
 
-import React, { useCallback, useEffect, useState } from "react"
+import React, { useCallback, useEffect, useMemo, useState } from "react"
 import { useCompletion } from "ai/react"
 import { toast } from "sonner"
 
 import { defaultValues, Trip, type FormData } from "@/types/types"
-import { getUserTrips, saveGeneration } from "@/lib/actions"
+import { saveGeneration } from "@/lib/actions"
 import { generatePrompt } from "@/lib/generate-prompt"
 import { cn } from "@/lib/utils"
-import { TripForm } from "@/components/form/TripForm"
+import { TripForm } from "@/components/form/trip-form"
 import { TripCard } from "@/components/trip/trip-card"
 import { TripCardSkeleton } from "@/components/trip/trip-card-skeleton"
 
@@ -24,68 +24,66 @@ export function GenerateTrip() {
     },
   })
 
+  // Save trip only when a valid trip object is present
   useEffect(() => {
     if (trip) {
-      saveGeneration(trip)
+      saveGeneration(trip).catch((err) => {
+        console.error("Error saving trip:", err)
+        toast.error("Failed to save trip. Please try again.")
+      })
     }
   }, [trip])
-
   const onSubmit = useCallback(
-    async (values: FormData, e: React.FormEvent) => {
-      const prompt = generatePrompt(values)
-      const completion = await complete(prompt)
+    async (values: FormData) => {
+      // No event parameter
       setFormValues(values)
 
-      if (!completion) {
-        throw new Error("Failed to generate trip plan. Try again.")
-      }
-
       try {
-        //  Step 1: Remove code block markers (` ```json ` and ` ``` `)
-        let cleanedCompletion = completion.replace(/```json|```/g, "").trim()
+        const prompt = generatePrompt(values)
+        const completion = await complete(prompt)
 
-        //  Step 2: Fix improperly escaped quotes
-        cleanedCompletion = cleanedCompletion.replace(/\\"/g, '"')
+        if (!completion) {
+          toast.error("Failed to generate trip plan. Try again.")
+          return
+        }
 
-        //  Step 3: Ensure keys are properly wrapped in double quotes
-        cleanedCompletion = cleanedCompletion.replace(
-          /([{,])(\s*)([a-zA-Z0-9_]+)(\s*):/g,
-          '$1"$3":'
-        )
-
-        //  Step 4: Parse JSON safely
-        const result = JSON.parse(cleanedCompletion)
-
-        console.log("Parsed Trip Plan:", result) // Show parsed JSON in console
-        setTrip(result) //  Update state with parsed JSON
+        const result = JSON.parse(completion)
+        setTrip(result)
       } catch (error) {
-        console.error("Error parsing JSON:", error)
-        toast.error("Uh oh! Failed to generate trip plan. Try again.")
+        console.error("Error fetching or parsing trip data:", error)
+        toast.error("Uh oh! Something went wrong. Please try again.")
       }
     },
     [complete]
   )
 
+  // Memoize className to prevent unnecessary re-renders
+  const containerClass = useMemo(
+    () =>
+      cn("mx-auto space-y-6 md:space-x-6 md:space-y-0", {
+        "md:flex": isLoading || isTripVisible,
+        "max-w-2xl": !isLoading && !isTripVisible,
+      }),
+    [isLoading, isTripVisible]
+  )
+
+  const formWrapperClass = useMemo(
+    () => cn({ "md:flex md:w-1/3": isLoading || isTripVisible }),
+    [isLoading, isTripVisible]
+  )
+
+  const tripContainerClass = useMemo(
+    () => cn({ "md:flex md:flex-col md:w-2/3": isLoading || isTripVisible }),
+    [isLoading, isTripVisible]
+  )
+
   return (
     <div className="pb-24">
-      <div
-        className={cn("mx-auto space-y-6 md:space-x-6 md:space-y-0", {
-          "md:flex": isLoading || isTripVisible,
-          "max-w-2xl": !isLoading && !isTripVisible,
-        })}
-      >
-        <div
-          className={cn({
-            "md:flex md:w-1/3": isLoading || isTripVisible,
-          })}
-        >
+      <div className={containerClass}>
+        <div className={formWrapperClass}>
           <TripForm onSubmit={onSubmit} isLoading={isLoading} />
         </div>
-        <div
-          className={cn({
-            "md:flex md:flex-col md:w-2/3": isLoading || isTripVisible,
-          })}
-        >
+        <div className={tripContainerClass}>
           <div className="md:flex">
             {!isLoading && trip && <TripCard trip={trip} />}
             {isLoading && <TripCardSkeleton />}
