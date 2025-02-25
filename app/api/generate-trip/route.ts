@@ -22,7 +22,7 @@ function fixMalformedJson(rawJson: string): string {
     .replace(/,\s*]/g, "]") //  Remove trailing commas before closing brackets
     .replace(/(?<!\w)undefined(?!\w)/g, "null") //  Replace "undefined" with "null"
     .replace(/\\n/g, " ") //  Replace unnecessary new lines
-    .trim();
+    .trim()
 }
 
 export async function POST(req: Request) {

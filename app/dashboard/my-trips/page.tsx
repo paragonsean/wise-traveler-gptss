@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   title: "Your Travel Plans",
 
   description:
-    "Explore your saved trips in one place. Your next adventure starts here!"
+    "Explore your saved trips in one place. Your next adventure starts here!",
 }
 
 export default async function TripPage() {

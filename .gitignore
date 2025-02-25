@@ -41,3 +41,6 @@ yarn-error.log*
 .vercel
 supabase
 app/api/generate-recipe/route.ts
+
+# clerk configuration (can include secrets)
+/.clerk/

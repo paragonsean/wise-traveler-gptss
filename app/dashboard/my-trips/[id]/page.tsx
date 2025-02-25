@@ -13,7 +13,7 @@ import { TripCard } from "@/components/trip/trip-card"
 export const metadata: Metadata = {
   metadataBase: new URL("https://wise-traveler.app"),
   title: "My Trips",
-  description: "Manage your travel plans."
+  description: "Manage your travel plans.",
 }
 
 interface TripPageProps {
