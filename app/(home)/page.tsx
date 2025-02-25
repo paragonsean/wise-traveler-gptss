@@ -14,7 +14,7 @@ export default async function IndexPage() {
       <PageHeader>
         <PageHeaderHeading>
           Say goodbye to travel planning with{" "}
-          <span className="bg-gradient-to-r from-violet-500 to-teal-300 bg-clip-text text-transparent">
+          <span className="bg-linear-to-r from-violet-500 to-teal-300 bg-clip-text text-transparent">
             {" WiseTraveler"}
           </span>
         </PageHeaderHeading>
