@@ -23,8 +23,8 @@ interface TripPageProps {
 }
 
 export default async function TripPage(props: TripPageProps) {
-  const params = await props.params;
-  const { getToken } = await auth();
+  const params = await props.params
+  const { getToken } = await auth()
   const id = params.id
   const [trip] = await Promise.all([getTripPrivate(id)])
 

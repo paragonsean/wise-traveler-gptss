@@ -10,7 +10,7 @@ interface DashboardLayoutProps {
 export default async function DashboardLayout({
   children,
 }: DashboardLayoutProps) {
-  const user = await currentUser();
+  const user = await currentUser()
 
   return (
     <div className="relative mx-auto flex min-h-screen max-w-6xl flex-col items-center">

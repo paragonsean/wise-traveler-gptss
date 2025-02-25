@@ -8,7 +8,7 @@ const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_KEY!
 export async function supabaseClient() {
   console.log("Initializing authenticated Supabase client...")
 
-  const { getToken } = await auth();
+  const { getToken } = await auth()
   const supabaseAccessToken = await getToken({ template: "supabase" })
 
   if (!supabaseAccessToken) {

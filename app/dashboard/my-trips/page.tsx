@@ -2,8 +2,8 @@ import { type Metadata } from "next"
 
 import type { Tables } from "@/types/database.types"
 import { getTripsByUserId, getTripsPrivate } from "@/lib/supabase-queries"
-import { DataTable } from "@/components/dashboard/data-table"
 import { columns } from "@/components/dashboard/columns"
+import { DataTable } from "@/components/dashboard/data-table"
 import {
   PageHeader,
   PageHeaderDescription,

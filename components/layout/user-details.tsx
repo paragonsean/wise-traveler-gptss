@@ -1,15 +1,15 @@
-"use client";
+"use client"
 
-import { useOrganization, useSession, useUser } from "@clerk/nextjs";
+import { useOrganization, useSession, useUser } from "@clerk/nextjs"
 
 function Row({
   desc,
   value,
   children,
 }: {
-  desc: string;
-  value: string;
-  children: React.ReactNode;
+  desc: string
+  value: string
+  children: React.ReactNode
 }) {
   return (
     <div className="h-[2.125rem] grid grid-cols-2 items-center relative">
@@ -19,7 +19,7 @@ function Row({
         {children}
       </span>
     </div>
-  );
+  )
 }
 
 function PointerC({ label }: { label: string }) {
@@ -33,7 +33,7 @@ function PointerC({ label }: { label: string }) {
         {label}
       </div>
     </div>
-  );
+  )
 }
 
 function formatDate(date: Date) {
@@ -41,7 +41,7 @@ function formatDate(date: Date) {
     month: "short",
     day: "numeric",
     year: "numeric",
-  });
+  })
 }
 
 function formatDateWithNumbers(date: Date): string {
@@ -53,15 +53,15 @@ function formatDateWithNumbers(date: Date): string {
     minute: "2-digit",
     second: "2-digit",
     hour12: true,
-  });
+  })
 }
 
 export function UserDetails() {
-  const { user } = useUser();
-  const { session } = useSession();
-  const { organization } = useOrganization();
+  const { user } = useUser()
+  const { session } = useSession()
+  const { organization } = useOrganization()
 
-  if (!user || !session) return null;
+  if (!user || !session) return null
 
   return (
     <div className="p-16 rounded-lg border border-[#EDEDED] bg-[#F1F1F2] background relative">
@@ -163,5 +163,5 @@ export function UserDetails() {
         ) : null}
       </div>
     </div>
-  );
+  )
 }

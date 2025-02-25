@@ -1,13 +1,14 @@
 import { auth } from "@clerk/nextjs/server"
 
 import { supabaseClient, supabaseClientPublic } from "@/lib/supabase-client"
+
 import { TripTable } from "../components/dashboard/columns"
 
 // Fetch user-specific trips (Private)
 export async function getTripsByUserId() {
   console.log("Fetching trips for authenticated user...")
 
-  const { userId } = await auth();
+  const { userId } = await auth()
   if (!userId) {
     console.error("User is not authenticated.")
     return []
@@ -160,7 +161,7 @@ export async function getTripPrivate(id: string) {
 
 // Fetch private trips (For authenticated users)
 export async function getTripsPrivate(): Promise<TripTable[] | null> {
-  const { getToken, userId } = await auth();
+  const { getToken, userId } = await auth()
   const supabaseAccessToken = await getToken({ template: "supabase" })
   const supabase = await supabaseClient()
 

@@ -13,8 +13,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import { tripInfo } from "@/components/trip/trip-constants"
 import { SaveTripButton } from "@/components/trip/save-trip"
+import { tripInfo } from "@/components/trip/trip-constants"
 
 interface GeneratedTripContentProps {
   trip: Trip
@@ -111,7 +111,9 @@ export function TripCard({ trip }: GeneratedTripContentProps) {
                   <ul>
                     {day.activities.map((activity, j) => (
                       <li key={`activity-${j}`}>
-                        {activity.time} - {activity.activity} at {activity.location} (Estimated Cost: ${activity.estimated_cost})
+                        {activity.time} - {activity.activity} at{" "}
+                        {activity.location} (Estimated Cost: $
+                        {activity.estimated_cost})
                       </li>
                     ))}
                     <li>

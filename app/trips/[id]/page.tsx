@@ -15,8 +15,10 @@ interface TripPageProps {
   }>
 }
 
-export async function generateMetadata(props: TripPageProps): Promise<Metadata> {
-  const params = await props.params;
+export async function generateMetadata(
+  props: TripPageProps
+): Promise<Metadata> {
+  const params = await props.params
   const id = params.id
   const [trip] = await Promise.all([getTripPublic(id)])
 
@@ -32,7 +34,7 @@ export async function generateMetadata(props: TripPageProps): Promise<Metadata> 
 }
 
 export default async function TripPage(props: TripPageProps) {
-  const params = await props.params;
+  const params = await props.params
   const id = params.id
   const [trip] = await Promise.all([getTripPublic(id)])
 

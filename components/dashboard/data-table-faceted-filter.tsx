@@ -48,7 +48,9 @@ export function DataTableFacetedFilter<TData, TValue>({
     } else {
       newSelectedValues.add(value)
     }
-    column?.setFilterValue(newSelectedValues.size ? Array.from(newSelectedValues) : undefined)
+    column?.setFilterValue(
+      newSelectedValues.size ? Array.from(newSelectedValues) : undefined
+    )
   }
 
   return (
@@ -101,7 +103,10 @@ export function DataTableFacetedFilter<TData, TValue>({
               {options.map((option) => {
                 const isSelected = selectedValues.has(option.value)
                 return (
-                  <CommandItem key={option.value} onSelect={() => toggleSelection(option.value)}>
+                  <CommandItem
+                    key={option.value}
+                    onSelect={() => toggleSelection(option.value)}
+                  >
                     <div
                       className={cn(
                         "mr-2 flex size-4 items-center justify-center rounded-sm border border-primary",
