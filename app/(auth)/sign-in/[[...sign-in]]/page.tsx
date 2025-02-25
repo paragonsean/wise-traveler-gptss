@@ -4,7 +4,7 @@ import { SignIn } from "@clerk/nextjs"
 export const metadata: Metadata = {
   metadataBase: new URL("https://chef-genie.app"),
   title: "Sign In",
-  description: "Sign in to your account",
+  description: "Sign in to your account"
 }
 
 export default function SignInPage() {

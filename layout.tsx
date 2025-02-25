@@ -12,11 +12,14 @@ import { ThemeProvider } from "@/components/theme-provider"
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://wise-traveler.app"),
+
   title: {
     default: siteConfig.name,
     template: `%s - ${siteConfig.name}`,
   },
+
   description: siteConfig.description,
+
   keywords: [
     "Wise Traveler",
     "Trip Planner AI",
@@ -26,13 +29,16 @@ export const metadata: Metadata = {
     "Trip Itinerary Generator",
     "AI-Powered Travel",
   ],
+
   authors: [
     {
       name: "Your Name",
       url: "https://github.com/yourprofile",
     },
   ],
+
   creator: "Wise Traveler Team",
+
   openGraph: {
     type: "website",
     locale: "en_US",
@@ -49,6 +55,7 @@ export const metadata: Metadata = {
       },
     ],
   },
+
   twitter: {
     card: "summary_large_image",
     title: siteConfig.name,
@@ -56,9 +63,10 @@ export const metadata: Metadata = {
     images: [siteConfig.ogImage],
     creator: "@wise_traveler",
   },
+
   icons: {
     icon: "/favicon.ico",
-  },
+  }
 }
 
 export const viewport: Viewport = {

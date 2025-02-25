@@ -16,8 +16,9 @@ type Trip = Tables<"trips">
 export const metadata: Metadata = {
   metadataBase: new URL("https://wise-traveler.app"),
   title: "Your Travel Plans",
+
   description:
-    "Explore your saved trips in one place. Your next adventure starts here!",
+    "Explore your saved trips in one place. Your next adventure starts here!"
 }
 
 export default async function TripPage() {
