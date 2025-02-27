@@ -2,7 +2,7 @@ import { type Metadata } from "next"
 import { SignIn } from "@clerk/nextjs"
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://chef-genie.app"),
+  metadataBase: new URL("https://wisetraveler.vercel.com"),
   title: "Sign In",
   description: "Sign in to your account",
 }
